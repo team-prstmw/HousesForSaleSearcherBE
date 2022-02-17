@@ -1,0 +1,24 @@
+GET http://localhost:4000/favorites
+
+###
+GET http://localhost:4000/favorites/620eaf1068ec055c30007119
+
+###
+
+POST http://localhost:4000/favorites
+Content-Type: application/json
+
+{
+    "name" : "Zbychu"
+}
+###
+DELETE http://localhost:4000/favorites/620eb9389d67f16f5bc5684d
+
+###
+
+PATCH  http://localhost:4000/favorites/620eb9469d67f16f5bc56851
+Content-Type: application/json
+
+{
+    "name" : "Wladek"
+}
