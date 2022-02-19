@@ -18,4 +18,4 @@ const transactionControllers = (router) => {
   });
 };
 
-return transactionControllers;
+export default transactionControllers;
