@@ -4,8 +4,6 @@ import helmet from 'helmet';
 
 import env from './constants/env';
 import routes from './controllers';
-import favoritesRouter from './routes/favorites'
-
 
 const app = express();
 
@@ -28,6 +26,5 @@ app.use(compression());
 
 // api routes
 app.use('/api', routes);
-app.use('/favorites', favoritesRouter)
 
 export default app;
