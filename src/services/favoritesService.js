@@ -23,3 +23,12 @@ export const addToFavorite = async (data) => {
     // res.status(StatusCodes.BAD_REQUEST).json({ message: err.message });
   }
 };
+
+export const findAllFavorites = async () => {
+  try {
+    const favorites = await favoriteModel.find();
+    return { status: 'success', favorites };
+  } catch (err) {
+    return { status: 'invalid', message: err.message };
+  }
+};
