@@ -23,7 +23,7 @@ export const buyHouse = async (data) => {
   const house = await houseService.getById(houseId);
   const owner = await userService.getById(house.owner);
 
-  if (!buyer?.id || !house?.id || !owner?.id) {
+  if (!buyer || !buyer.id || !house || !house.id || !owner || !owner.id) {
     return { status: 'invalid', message: 'Transaction failed.' };
   }
 

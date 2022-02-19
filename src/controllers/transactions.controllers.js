@@ -6,7 +6,7 @@ const transactionControllers = (router) => {
 
     const response = await transactionService.buyHouse(body);
 
-    if (!response?.status) {
+    if (!response || !response.status) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status: 'server error' });
     }
 
