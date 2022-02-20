@@ -1,10 +1,11 @@
 import { StatusCodes } from 'http-status-codes';
+import transactionController from '../controllers/transaction.controllers';
 
-const transactionControllers = (router) => {
+const transactionRoutes = (router) => {
   router.post('/transactions', async (req, res) => {
     const body = req.body; // {userId: 'buyer', houseId: '', price: 10000}
 
-    const response = await transactionService.buyHouse(body);
+    const response = await transactionController.buyHouse(body);
 
     if (!response || !response.status) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status: 'server error' });
@@ -18,4 +19,4 @@ const transactionControllers = (router) => {
   });
 };
 
-export default transactionControllers;
+export default transactionRoutes;

@@ -3,7 +3,7 @@ import express from 'express';
 import helmet from 'helmet';
 
 import env from './constants/env';
-import routes from './controllers';
+import routes from './routes';
 
 const app = express();
 
