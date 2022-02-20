@@ -4,7 +4,7 @@ import { addToFavorite } from '../services/favoritesService';
 const favoritesControllers = (router) => {
   router.post('/favorites', async (req, res) => {
     const response = await addToFavorite(req.body); // {userId: '123', houseId: '321'}
-    if (!response.status) {
+    if (!response || !response.status) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status: 'server error' });
     }
     if (response.status === 'invalid') {

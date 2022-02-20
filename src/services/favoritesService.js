@@ -3,7 +3,9 @@ import favoriteModel from '../models/favorite';
 
 export const addToFavorite = async (data) => {
   const { userId, houseId } = data;
-
+  if (!userId || !houseId) {
+    return;
+  }
   const user = await userService.getById(userId);
   const house = await houseService.getById(houseId);
 
