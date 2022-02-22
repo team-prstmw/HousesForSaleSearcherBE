@@ -1,17 +1,23 @@
-import { StatusCodes } from 'http-status-codes';
-import { addToFavorite } from '../services/favoritesService';
+import favoriteModel from '../models/favorite';
 
-const favoritesControllers = (router) => {
-  router.post('/favorites', async (req, res) => {
-    const response = await addToFavorite(req.body); // {userId: '123', houseId: '321'}
-    if (!response || !response.status) {
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status: 'server error' });
-    }
-    if (response.status === 'invalid') {
-      return res.status(StatusCodes.BAD_REQUEST).json(response);
-    }
-    return res.status(StatusCodes.CREATED).json(response);
+export const addToFavorite = async (data) => {
+  const { userId, houseId } = data;
+  
+  const user = await userService.getById(userId);
+  const house = await houseService.getById(houseId);
+
+  if (!user.id || !house.id) {
+    return { status: 'invalid', message: 'User or house does not exists.' };
+  }
+
+  const favorite = new favoriteModel({
+    user: userId,
+    house: houseId,
   });
+  try {
+    const newFavorite = await favorite.save();
+    return { status: 'success', newFavorite };
+  } catch (err) {
+    return { status: 'invalid', message: err.message };
+  }
 };
-
-export default favoritesControllers;
