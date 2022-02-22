@@ -1,13 +1,13 @@
 import transactionModel from '../models/transaction';
 
-const addTransaction = async (userId, ownerId, houseId, timestamp, price) => {
-  if (!userId || !ownerId || !houseId || !timestamp || !price) {
+const addTransaction = async (buyerId, sellerId, houseId, timestamp, price) => {
+  if (!buyerId || !sellerId || !houseId || !timestamp || !price) {
     return;
   }
 
   const transaction = await transactionModel.create({
-    user: userId,
-    owner: ownerId,
+    buyer: buyerId,
+    seller: sellerId,
     house: houseId,
     timestamp,
     price,
@@ -17,13 +17,13 @@ const addTransaction = async (userId, ownerId, houseId, timestamp, price) => {
 };
 
 export const buyHouse = async (data) => {
-  const { userId, houseId, price } = data;
+  const { buyerId, houseId, price } = data;
 
-  const buyer = await userController.getById(userId);
+  const buyer = await userController.getById(buyerId);
   const house = await houseController.getById(houseId);
-  const owner = await userController.getById(house.owner);
+  const seller = await userController.getById(house.owner);
 
-  if (!buyer || !buyer.id || !house || !house.id || !owner || !owner.id) {
+  if (!buyer || !buyer.id || !house || !house.id || !seller || !seller.id) {
     return { status: 'invalid', message: 'Transaction failed.' };
   }
 
@@ -32,10 +32,10 @@ export const buyHouse = async (data) => {
   }
 
   await userController.getPayment(buyer.id, price);
-  await userController.addCash(owner.id, price);
+  await userController.addCash(seller.id, price);
   await houseController.changeOwner(houseId, buyer.id);
 
-  const transaction = await addTransaction(userId, owner.id, houseId, new Date(), price);
+  const transaction = await addTransaction(buyerId, seller.id, houseId, new Date(), price);
 
   if (!transaction || !transaction.id) {
     return;
