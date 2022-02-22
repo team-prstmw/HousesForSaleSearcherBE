@@ -51,7 +51,7 @@ const housesSchema = new mongoose.Schema({
             required: true
         },
         heating:{
-            type: Array[String],
+            type: String,
             required: true
         }
     },
