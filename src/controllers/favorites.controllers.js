@@ -9,7 +9,6 @@ export const addToFavorite = async (data) => {
   if (!user.id || !house.id) {
     return { status: 'invalid', message: 'User or house does not exists.' };
   }
-
   const favorite = new favoriteModel({
     user: userId,
     house: houseId,
@@ -21,10 +20,9 @@ export const addToFavorite = async (data) => {
     return { status: 'invalid', message: err.message };
   }
 };
-
 export const findAllFavorites = async () => {
   try {
-    const favorites = await favoriteModel.find();
+    const favorites = await favoriteModel.find().skip(0).limit(10);
     return { status: 'success', favorites };
   } catch (err) {
     return { status: 'invalid', message: err.message };
