@@ -13,7 +13,8 @@
   "scripts": {
     "build": "yarn build",
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test": "jest"
   },
   "dependencies": {
     "compression": "1.7.4",
@@ -26,6 +27,7 @@
     "mongoose": "6.2.1"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "2.2.0",
     "eslint": "7.32.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-import": "2.24.2",
@@ -34,6 +36,7 @@
     "eslint-plugin-jest-formatting": "3.0.0",
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-simple-import-sort": "7.0.0",
+    "jest": "27.5.1",
     "nodemon": "2.0.12",
     "prettier": "2.4.1"
   },
