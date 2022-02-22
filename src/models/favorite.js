@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const favoriteSchema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: 'User' },
-  house: { type: Schema.Types.ObjectId, ref: 'House' },
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  house: { type: Schema.Types.ObjectId, ref: 'House', required: true },
 });
 
 const Favorite = mongoose.model('Favorite', favoriteSchema);

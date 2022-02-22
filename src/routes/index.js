@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import helloControllers from './hello.controllers';
-import favoritesControllers from './favorites.controllers';
+import helloControllers from './hello.routes';
+import favoritesControllers from './favorites.routes';
 
 const router = Router();
 
