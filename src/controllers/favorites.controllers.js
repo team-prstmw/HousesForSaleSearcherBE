@@ -28,3 +28,11 @@ export const findAllFavorites = async () => {
     return { status: 'invalid', message: err.message };
   }
 };
+export const deleteFavorite = async (data) => {
+  try {
+    const removedFavorite = await favoriteModel.remove({ _id: data });
+    return { status: 'success', removedFavorite };
+  } catch (err) {
+    return { status: 'invalid', message: err.message };
+  }
+};
