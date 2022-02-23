@@ -17,6 +17,9 @@ const housesSchema = new mongoose.Schema({
             type: String,
             required: true
         },
+        district: {
+            type:String,
+        },
         street:{
             type: String,
             required: true
