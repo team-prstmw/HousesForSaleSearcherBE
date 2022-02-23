@@ -1,4 +1,4 @@
-const { createUser, userLogin } = require('../../controllers/user.controllers');
+const { createUser, userLogin, userEdit } = require('../../controllers/user.controllers');
 
 const userRoutes = (router) => {
   router.post('/users', (req, res) => {
@@ -7,6 +7,10 @@ const userRoutes = (router) => {
 
   router.post('/login', (req, res) => {
     userLogin(req.body, res);
+  });
+
+  router.patch('/edit', async (req, res) => {
+    userEdit(req.body, res);
   });
 };
 

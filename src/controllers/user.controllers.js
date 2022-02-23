@@ -1,5 +1,5 @@
 import User from '../models/user';
-const { registerValidation, loginValidation } = require('../routes/user/validation');
+const { registerValidation, loginValidation, editValidation } = require('../routes/user/validation');
 import { StatusCodes } from 'http-status-codes';
 import bcrypt from 'bcryptjs';
 
@@ -25,6 +25,29 @@ export const createUser = async (data, response) => {
   } catch (err) {
     response.status(StatusCodes.BAD_REQUEST).send(err);
   }
+};
+
+export const userEdit = async (data, response) => {
+  const { error } = editValidation(data);
+  if (error) return response.status(StatusCodes.BAD_REQUEST).send(error.details[0].message);
+
+  const salt = await bcrypt.genSalt();
+  const hashedPassword = await bcrypt.hash(data.password, salt);
+
+  const user = await User.findOneAndUpdate(
+    {
+      _id: data._id,
+    },
+    {
+      name: data.name,
+      email: data.email,
+      password: hashedPassword,
+      phoneNr: data.phoneNr,
+    },
+    { new: true }
+  );
+  if (!user) return response.status(StatusCodes.BAD_REQUEST).send({ message: 'User not found' });
+  response.send(user);
 };
 
 export const userLogin = async (data, response) => {
