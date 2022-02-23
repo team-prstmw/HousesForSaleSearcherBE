@@ -1,7 +1,10 @@
 const mongoose = require('mongoose')
 
 const housesSchema = new mongoose.Schema({
-    owner: {},
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
     address:{
         country:{
             type: String,
@@ -20,16 +23,6 @@ const housesSchema = new mongoose.Schema({
         },
         houseNr: {
             type: String,
-            required: true
-        }
-    },
-    location: {
-        lat:{
-            type: Number,
-            required: true
-        },
-        lng:{
-            type: Number,
             required: true
         }
     },
@@ -70,9 +63,37 @@ const housesSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    createdAt: {
-        type: Date,
-        default: Date.now()
+    meta: {
+        houseId: {
+            type: mongoose.Schema.Types.ObjectId,
+            default: new mongoose.Types.ObjectId
+        },
+        created: {
+            type: Date,
+            default: Date.now(),
+            immutable: true
+        },
+        modified: {
+            type: Date,
+        },
+        viewsCounter: {
+            type: Number,
+            default: 0
+        },
+        favoritesCounter: {
+            type: Number,
+            default: 0
+        },
+        location: {
+            lat:{
+                type: Number,
+                required: true
+            },
+            lng:{
+                type: Number,
+                required: true
+            }
+        },
     }
 })
 
