@@ -1,9 +1,5 @@
 import User from '../models/user';
-<<<<<<< HEAD
-const { registerValidation, loginValidation, editValidation } = require('../routes/user/validation');
-=======
 import { registerValidation, loginValidation } from '../routes/user/validation';
->>>>>>> cbf27e6cf89eb5708979e8e12e11a3a2c5e7bd26
 import { StatusCodes } from 'http-status-codes';
 import bcrypt from 'bcryptjs';
 
