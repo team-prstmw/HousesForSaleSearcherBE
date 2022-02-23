@@ -17,6 +17,7 @@ export const createUser = async (data, response) => {
     name: data.name,
     email: data.email,
     password: hashedPassword,
+    phoneNr: data.phoneNr,
   });
   try {
     const savedUser = await user.save();

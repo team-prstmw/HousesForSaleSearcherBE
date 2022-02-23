@@ -13,8 +13,15 @@ const UserSchema = mongoose.Schema({
         type: String,
         require: true,
         min: 6,
-    }
-
+    },
+    phoneNr: {
+        type: Number,
+        require: true,
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
 })
 
 const User = mongoose.model('User', UserSchema);
