@@ -9,8 +9,8 @@ const userRoutes = (router) => {
     userLogin(req.body, res);
   });
 
-  router.patch('/edit', async (req, res) => {
-    userEdit(req.body, res);
+  router.patch('/users/:id', async (req, res) => {
+    userEdit(req, res);
   });
 };
 

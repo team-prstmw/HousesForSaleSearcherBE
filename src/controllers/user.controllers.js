@@ -27,23 +27,15 @@ export const createUser = async (data, response) => {
   }
 };
 
-export const userEdit = async (data, response) => {
-  const { error } = editValidation(data);
+export const userEdit = async (request, response) => {
+  const { error } = editValidation(request.body);
   if (error) return response.status(StatusCodes.BAD_REQUEST).send(error.details[0].message);
-
-  const salt = await bcrypt.genSalt();
-  const hashedPassword = await bcrypt.hash(data.password, salt);
 
   const user = await User.findOneAndUpdate(
     {
-      _id: data._id,
+      _id: request.params.id,
     },
-    {
-      name: data.name,
-      email: data.email,
-      password: hashedPassword,
-      phoneNr: data.phoneNr,
-    },
+    request.body,
     { new: true }
   );
   if (!user) return response.status(StatusCodes.BAD_REQUEST).send({ message: 'User not found' });
