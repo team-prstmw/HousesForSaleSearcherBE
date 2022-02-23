@@ -1,5 +1,9 @@
 import User from '../models/user';
+<<<<<<< HEAD
 const { registerValidation, loginValidation, editValidation } = require('../routes/user/validation');
+=======
+import { registerValidation, loginValidation } from '../routes/user/validation';
+>>>>>>> cbf27e6cf89eb5708979e8e12e11a3a2c5e7bd26
 import { StatusCodes } from 'http-status-codes';
 import bcrypt from 'bcryptjs';
 
@@ -50,7 +54,7 @@ export const userLogin = async (data, response) => {
   if (!user) return response.status(StatusCodes.BAD_REQUEST).send('Email or password is wrong');
 
   const validPass = await bcrypt.compare(data.password, user.password);
-  if (!validPass) return response.status(StatusCodes.BAD_REQUEST).send('Email or password is wrong Password');
+  if (!validPass) return response.status(StatusCodes.BAD_REQUEST).send('Email or password is wrong');
 
   response.send(`Wiatm ${user.name}!`);
 };

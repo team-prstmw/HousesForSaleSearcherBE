@@ -5,7 +5,6 @@ export const registerValidation = (data) => {
     name: Joi.string().pattern(new RegExp('^[A-Za-z0-9]{6,255}$')).required(),
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
-    data: Joi.date(),
     phoneNr: Joi.string().length(9).pattern(new RegExp('^[0-9]+$')).required(),
   });
 
