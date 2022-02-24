@@ -5,7 +5,6 @@ const createNewHouseRoute = (router) => {
       const newHouse = await createNewHouseController(req.body)
       try {
           res.status(201).json(newHouse)
-          console.log('new house created')
       } catch (err){
           res.status(400).json({ message: err.message})
       }
