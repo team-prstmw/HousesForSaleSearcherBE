@@ -1,4 +1,4 @@
-import House from '../models/createNewHouse'
+import House from '../models/createNewHouseModel'
 import { findAddress } from '../services/findAddress';
 
 const createNewHouseController = async (houseData) => {
