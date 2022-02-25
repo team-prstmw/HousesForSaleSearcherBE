@@ -1,15 +1,10 @@
 import auth from './verifyToken';
-
-const cookieParser = require('cookie-parser')
-
-const { createUser, userLogin } = require('../../controllers/user.controllers');
+import { createUser, userLogin } from '../../controllers/user.controllers';
 
 const userRoutes = (router) => {
-  router.use(cookieParser());
-
-  router.get('/', (req,res) => {
-    res.send("Strona główna zostałeś wylogowany");
-  })
+  router.get('/', (req, res) => {
+    res.send('Strona główna zostałeś wylogowany');
+  });
 
   router.post('/users', (req, res) => {
     createUser(req.body, res);
@@ -20,10 +15,9 @@ const userRoutes = (router) => {
   });
 
   router.get('/logout', auth, (req, res) => {
-      res.clearCookie("auth");
-      return res.redirect("/api/");
+    res.clearCookie('auth');
+    return res.redirect('/api/');
   });
-
 };
 
 export default userRoutes;
