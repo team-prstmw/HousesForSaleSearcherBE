@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import jsonwebtoken from 'jsonwebtoken';
 
 const auth = (req, res, next) => {
-  const token = req.header('auth-token');
+  const token = req.cookies.auth;
   if (!token) return res.status(StatusCodes.BAD_REQUEST).send('Acces denied');
 
   try {

@@ -3,7 +3,6 @@ import { registerValidation, loginValidation } from '../routes/user/validation';
 import { StatusCodes } from 'http-status-codes';
 import bcrypt from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
-import res from 'express/lib/response';
 
 export const createUser = async (data, response) => {
   const { error } = registerValidation(data);
@@ -33,14 +32,17 @@ export const userLogin = async (data, response) => {
   const { error } = loginValidation(data);
   if (error) return response.status(StatusCodes.BAD_REQUEST).send(error.details[0].message);
 
-  const user = await User.findOne({ email: data.email });
+  // const user = await User.findOne({ email: data.email });
+  const user = await User.findOne({ email: 'HasloToTest123@gmail.com' });
   if (!user) return response.status(StatusCodes.BAD_REQUEST).send('Email or password is wrong');
 
-  const validPass = await bcrypt.compare(data.password, user.password);
+  // const validPass = await bcrypt.compare(data.password, user.password);
+  const validPass = await bcrypt.compare('Test123', user.password);
   if (!validPass) return response.status(StatusCodes.BAD_REQUEST).send('Email or password is wrong');
 
   const token = jsonwebtoken.sign({_id:  user._id}, process.env.TOKEN_SECRET)
-  response.header('auth-token', token);
+
+  response.cookie('auth', token, {maxAge: 900000, httpOnly: true});
 
   response.send(`Wiatm ${user.name}!`);
 };
