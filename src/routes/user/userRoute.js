@@ -1,3 +1,5 @@
+import auth from './verifyToken';
+
 const { createUser, userLogin } = require('../../controllers/user.controllers');
 
 const userRoutes = (router) => {
