@@ -19,7 +19,7 @@ const userRoutes = (router) => {
     return res.redirect('/api/');
   });
 
-  router.patch('/users/:id', async (req, res) => {
+  router.patch('/users/:id', auth, async (req, res) => {
     userDeletion(req, res);
   });
 };
