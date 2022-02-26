@@ -8,8 +8,8 @@ export const createUser = async (data, response) => {
   const { error } = registerValidation(data);
   if (error) return response.status(StatusCodes.BAD_REQUEST).send(error.details[0].message);
 
-  const emailExist = await User.findOne({ email: data.email });
-  if (emailExist) return response.status(StatusCodes.BAD_REQUEST).send('Email already exists');
+  const userExist = await User.findOne({ email: data.email });
+  if (userExist && userExist.statusUser == 1) return response.status(StatusCodes.BAD_REQUEST).send('Email already exists');
 
   const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(data.password, salt);
@@ -32,17 +32,35 @@ export const userLogin = async (data, response) => {
   const { error } = loginValidation(data);
   if (error) return response.status(StatusCodes.BAD_REQUEST).send(error.details[0].message);
 
-  // const user = await User.findOne({ email: data.email });
-  const user = await User.findOne({ email: 'HasloToTest123@gmail.com' });
-  if (!user) return response.status(StatusCodes.BAD_REQUEST).send('Email or password is wrong');
+  // const users = await User.find({ email: data.email });
+  const users = await User.find({ email: 'HasloToTest123@gmail.com' }); // Dodano na czas testowania
+  const activeUser = users.filter((user) => {
+    if(user.statusUser == 1){
+      return user;
+    }
+  })
 
-  // const validPass = await bcrypt.compare(data.password, user.password);
-  const validPass = await bcrypt.compare('Test123', user.password);
+  if (!activeUser[0] || activeUser[0].statusUser == 0) return response.status(StatusCodes.BAD_REQUEST).send('Email or password is wrong');
+
+  // const validPass = await bcrypt.compare(data.password, activeUser[0].password);
+  const validPass = await bcrypt.compare('Test123', activeUser[0].password); // Dodano na czas testowania
   if (!validPass) return response.status(StatusCodes.BAD_REQUEST).send('Email or password is wrong');
 
-  const token = jsonwebtoken.sign({_id:  user._id}, process.env.TOKEN_SECRET)
+  const token = jsonwebtoken.sign({_id:  activeUser[0]._id}, process.env.TOKEN_SECRET)
 
   response.cookie('auth', token, {maxAge: 900000, httpOnly: true});
 
-  response.send(`Wiatm ${user.name}!`);
+  response.send(`Wiatm ${activeUser[0].name}!`);
+};
+
+export const userDeletion = async (request, response) => {
+  const user = await User.findOneAndUpdate(
+    {
+      _id: request.params.id,
+    },
+    {statusUser: 0},
+    { new: true }
+  );
+  if (!user) return response.status(StatusCodes.BAD_REQUEST).send({ message: 'User not found' });
+  response.send(user);
 };

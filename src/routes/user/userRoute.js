@@ -1,5 +1,5 @@
 import auth from './verifyToken';
-import { createUser, userLogin } from '../../controllers/user.controllers';
+import { createUser, userLogin, userDeletion} from '../../controllers/user.controllers';
 
 const userRoutes = (router) => {
   router.get('/', (req, res) => {
@@ -17,6 +17,10 @@ const userRoutes = (router) => {
   router.get('/logout', auth, (req, res) => {
     res.clearCookie('auth');
     return res.redirect('/api/');
+  });
+
+  router.patch('/users/:id', async (req, res) => {
+    userDeletion(req, res);
   });
 };
 

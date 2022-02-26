@@ -22,6 +22,10 @@ const UserSchema = mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    statusUser:{
+        type: Number,
+        default: 1
+    }
 })
 
 const User = mongoose.model('User', UserSchema);

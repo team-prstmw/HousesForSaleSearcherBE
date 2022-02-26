@@ -13,6 +13,7 @@ export const registerValidation = (data) => {
 
 export const loginValidation = (data) => {
   const schemaUser = Joi.object({
+    // Dodano na czas testowania
     email: Joi.string().email(),
     password: Joi.string(),
     // email: Joi.string().email().required(),
