@@ -1,8 +1,8 @@
-import { StatusCodes } from 'http-status-codes';
-import transactionController from '../controllers/transaction.controllers';
+const { StatusCodes }= require( 'http-status-codes');
+const transactionController =require( '../controllers/transaction.controllers');
 
 const transactionRoutes = (router) => {
-  router.post('/transactions', async (req, res) => {
+  const create = router.post('/transactions', async (req, res) => {
     const body = req.body; // {userId: 'buyer', houseId: '', price: 10000}
 
     const response = await transactionController.buyHouse(body);
@@ -18,7 +18,7 @@ const transactionRoutes = (router) => {
     return res.status(StatusCodes.CREATED).json(response);
   });
 
-  router.get('/transactions/:id', async (req, res) => {
+  const getOne = router.get('/transactions/:id', async (req, res) => {
     const { id } = req.params;
 
     const response = await transactionController.getById(id);
@@ -32,10 +32,10 @@ const transactionRoutes = (router) => {
 
     return res.status(StatusCodes.CREATED).json(response);
   });
-  router.get('/transactions/', async (req, res) => {
 
+  const getAll = router.get('/transactions/', async (req, res) => {
     const response = await transactionController.getAll();
-    if (!response || !response.status) {
+    if (!response || !response.status || response.status === 'error') {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status: 'server error' });
     }
 
@@ -43,8 +43,16 @@ const transactionRoutes = (router) => {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
     }
 
+    console.log('res',res)
+
     return res.status(StatusCodes.CREATED).json(response);
   });
+
+  return {
+    create,
+    getOne,
+    getAll,
+  };
 };
 
-export default transactionRoutes;
+module.exports= transactionRoutes;

@@ -1,4 +1,4 @@
-import transactionModel from '../models/transaction';
+const  transactionModel =require( '../models/transaction');
 
 const addTransaction = async (buyerId, sellerId, houseId, timestamp, price) => {
   if (!buyerId || !sellerId || !houseId || !timestamp || !price) {
@@ -16,7 +16,7 @@ const addTransaction = async (buyerId, sellerId, houseId, timestamp, price) => {
   return transaction.lean(); // to get plain JS object
 };
 
-export const buyHouse = async (data) => {
+ const buyHouse = async (data) => {
   const { buyerId, houseId, price } = data;
 
   const buyer = await userController.getById(buyerId);
@@ -57,11 +57,7 @@ const getById = async (id) => {
 const getAll = async () => {
   const transactions = await transactionModel.find({});
 
-  if (!transactions || !transactions.length) {
-    return { status: 'error', message: 'Error while fetching transactions.' };
-  }
-
   return { status: 'success', transactions };
 };
 
-export default { buyHouse, getById, getAll };
+module.exports= { buyHouse, getById, getAll };
