@@ -44,4 +44,24 @@ export const buyHouse = async (data) => {
   return { status: 'success', transaction };
 };
 
-export default { buyHouse };
+const getById = async (id) => {
+  const transaction = await transactionModel.findById(id);
+
+  if (!transaction || !transaction.id) {
+    return { status: 'invalid', message: 'There is no transaction with that id.' };
+  }
+
+  return { status: 'success', transaction };
+};
+
+const getAll = async () => {
+  const transactions = await transactionModel.find({});
+
+  if (!transactions || !transactions.length) {
+    return { status: 'error', message: 'Error while fetching transactions.' };
+  }
+
+  return { status: 'success', transactions };
+};
+
+export default { buyHouse, getById, getAll };
