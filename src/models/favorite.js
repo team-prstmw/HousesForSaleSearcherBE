@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const favoriteSchema = new Schema({
+  _id: Schema.Types.ObjectId,
   user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   house: { type: Schema.Types.ObjectId, ref: 'House', required: true },
 });
