@@ -28,23 +28,11 @@ export const findAllFavorites = async () => {
     return { status: 'invalid', message: err.message };
   }
 };
-export const deleteFavorite = async (data) => {
-  const { userId, houseId } = data;
-
-  const user = await userService.getById(userId);
-  const house = await houseService.getById(houseId);
-
-  if (!user.id || !house.id) {
-    return { status: 'invalid', message: 'User or house does not exists.' };
-  }
-  const favorite = new favoriteModel({
-    user: userId,
-    house: houseId,
-  });
+export const getById = async (id) => {
   try {
-    const removedFavorite = await favorite.remove();
-    return { status: 'success', removedFavorite };
+    const favorite = await favoriteModel.findById(id);
+    return { status: 'success', favorite };
   } catch (err) {
-    return { status: 'invalid', message: err.message };
+    return { status: 'invalid', message: 'There is no favorite with this ID' };
   }
 };

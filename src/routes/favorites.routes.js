@@ -12,8 +12,9 @@ const favoritesControllers = (router) => {
     const response = await findAllFavorites();
     handleResponse(response, res, response.status);
   });
-  router.delete('/favorites', async (req, res) => {
-    const response = await deleteFavorite(req.body);
+  router.delete('/favorites/:favoriteId', async (req, res) => {
+    const { id } = req.params;
+    const response = await getById(id);
     handleResponse(response, res, response.status);
   });
 };
