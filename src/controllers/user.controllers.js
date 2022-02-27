@@ -1,41 +1,38 @@
 import User from '../models/user';
-import { registerValidation, loginValidation } from '../routes/user/validation';
-import { StatusCodes } from 'http-status-codes';
+import {registerValidation, loginValidation } from '../routes/user/validation';
 import bcrypt from 'bcryptjs';
 
-export const createUser = async (data, response) => {
+export const createUser = async (data) => {
   const { error } = registerValidation(data);
-  if (error) return response.status(StatusCodes.BAD_REQUEST).send(error.details[0].message);
-
-  const emailExist = await User.findOne({ email: data.email });
-  if (emailExist) return response.status(StatusCodes.BAD_REQUEST).send('Email already exists');
+  if (error) return {status: 'invalid', message: error.details[0].message};
 
   const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(data.password, salt);
+  try{
+    const user = await User.create({
+      name: data.name,
+      email: data.email,
+      password: hashedPassword,
+      phone: data.phone,
+    });
 
-  const user = new User({
-    name: data.name,
-    email: data.email,
-    password: hashedPassword,
-    phoneNr: data.phoneNr,
-  });
-  try {
-    const savedUser = await user.save();
-    response.send(savedUser);
-  } catch (err) {
-    response.status(StatusCodes.BAD_REQUEST).send(err);
+    return user;
+
+  } catch(err){
+    return {status: 'invalid', message: 'Email already exists', err};
   }
+  
 };
 
-export const userLogin = async (data, response) => {
+export const userLogin = async (data) => {
   const { error } = loginValidation(data);
-  if (error) return response.status(StatusCodes.BAD_REQUEST).send(error.details[0].message);
+  if (error) return {status: 'invalid', message: error.details[0].message};
 
   const user = await User.findOne({ email: data.email });
-  if (!user) return response.status(StatusCodes.BAD_REQUEST).send('Email or password is wrong');
+  if (!user) return {status: 'invalid', message: 'Email or password is wrong'};
 
   const validPass = await bcrypt.compare(data.password, user.password);
-  if (!validPass) return response.status(StatusCodes.BAD_REQUEST).send('Email or password is wrong');
+  if (!validPass) return {status: 'invalid', message: 'Email or password is wrong'};
 
-  response.send(`Wiatm ${user.name}!`);
+  return (`Wiatm ${user.name}!`);
 };
