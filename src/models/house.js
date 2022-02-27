@@ -1,8 +1,14 @@
 const mongoose = require('mongoose')
+const { Schema } = mongoose
 
-const housesSchema = new mongoose.Schema({
+const housesSchema = new Schema({
+    houseId: {
+        type: Schema.Types.ObjectId,
+        default: new mongoose.Types.ObjectId
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     address:{
@@ -13,7 +19,7 @@ const housesSchema = new mongoose.Schema({
         region:{
             type: String
         },
-        town:{
+        city:{
             type: String,
             required: true
         },
@@ -27,6 +33,10 @@ const housesSchema = new mongoose.Schema({
         houseNr: {
             type: String,
             required: true
+        },
+        flatNr: {
+            type: String,
+            default: ''
         }
     },
     houseType: {
@@ -48,10 +58,11 @@ const housesSchema = new mongoose.Schema({
         },
         heating:{
             type: String,
-            required: true
+            required: true,
+            lowercase: true
         }
     },
-    OtherFeatures:{
+    otherFeatures:{
         type: Array,
         default: []
     },
@@ -67,10 +78,6 @@ const housesSchema = new mongoose.Schema({
         required: true
     },
     meta: {
-        houseId: {
-            type: mongoose.Schema.Types.ObjectId,
-            default: new mongoose.Types.ObjectId
-        },
         created: {
             type: Date,
             default: Date.now(),
@@ -78,6 +85,7 @@ const housesSchema = new mongoose.Schema({
         },
         modified: {
             type: Date,
+            default: Date.now()
         },
         viewsCounter: {
             type: Number,
