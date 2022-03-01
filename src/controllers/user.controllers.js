@@ -22,7 +22,19 @@ export const createUser = async (data) => {
   }
 };
 
-<<<<<<< HEAD
+export const userLogin = async (data) => {
+  const { error } = loginValidation(data);
+  if (error) return { status: 'invalid', message: error.details[0].message };
+
+  const user = await User.findOne({ email: data.email });
+  if (!user) return { status: 'invalid', message: 'Email or password is wrong' };
+
+  const validPass = await bcrypt.compare(data.password, user.password);
+  if (!validPass) return { status: 'invalid', message: 'Email or password is wrong' };
+
+  return `Witam ${user.name}!`;
+};
+
 export const userEdit = async (request, response) => {
   const { error } = editValidation(request.body);
   if (error) return response.status(StatusCodes.BAD_REQUEST).send(error.details[0].message);
@@ -38,18 +50,3 @@ export const userEdit = async (request, response) => {
   response.send(user);
 };
 
-export const userLogin = async (data, response) => {
-=======
-export const userLogin = async (data) => {
->>>>>>> a7d69d8d871d85ae70fdb02096b4870ed1b07e7f
-  const { error } = loginValidation(data);
-  if (error) return { status: 'invalid', message: error.details[0].message };
-
-  const user = await User.findOne({ email: data.email });
-  if (!user) return { status: 'invalid', message: 'Email or password is wrong' };
-
-  const validPass = await bcrypt.compare(data.password, user.password);
-  if (!validPass) return { status: 'invalid', message: 'Email or password is wrong' };
-
-  return `Witam ${user.name}!`;
-};
