@@ -1,5 +1,5 @@
 import User from '../models/user';
-import { registerValidation, loginValidation } from '../routes/user/validation';
+import { registerValidation, loginValidation, editValidation } from '../routes/user/validation';
 import bcrypt from 'bcryptjs';
 
 export const createUser = async (data) => {
@@ -35,18 +35,17 @@ export const userLogin = async (data) => {
   return `Witam ${user.name}!`;
 };
 
-export const userEdit = async (request, response) => {
-  const { error } = editValidation(request.body);
-  if (error) return response.status(StatusCodes.BAD_REQUEST).send(error.details[0].message);
+export const userEdit = async (req) => {
+  const { error } = editValidation(req.body);
+  if (error) return { status: 'invalid', message: error.details[0].message };
 
   const user = await User.findOneAndUpdate(
     {
-      _id: request.params.id,
+      _id: req.params.id,
     },
-    request.body,
+    req.body,
     { new: true }
   );
-  if (!user) return response.status(StatusCodes.BAD_REQUEST).send({ message: 'User not found' });
-  response.send(user);
+  if (!user) return { status: 'invalid', message: 'User not found' };
+  return user;
 };
-
