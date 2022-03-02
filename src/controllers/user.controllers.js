@@ -57,8 +57,8 @@ export const passwdEdit = async (req) => {
   
   if (!(req.body.newPassword == req.body.newPasswordRepeat)) return { status: 'invalid', message: 'The passwords do not match.' };
 
-  const spr = await bcrypt.compare(req.body.newPasswordRepeat, user.password);
-  if (spr) return { status: 'invalid', message: 'The old password and the new password must be different.' };
+  const difOldNewPass = await bcrypt.compare(req.body.newPasswordRepeat, user.password);
+  if (difOldNewPass) return { status: 'invalid', message: 'The old password and the new password must be different.' };
 
   req.body.password = req.body.newPasswordRepeat;
   
