@@ -20,6 +20,8 @@ const userRoutes = (router) => {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
     }
 
+    res.header(response.header);
+
     return res.status(StatusCodes.CREATED).json(response);
   });
 

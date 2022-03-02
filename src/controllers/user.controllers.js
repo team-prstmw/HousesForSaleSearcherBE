@@ -34,8 +34,8 @@ export const userLogin = async (data) => {
   const validPass = await bcrypt.compare(data.password, user.password);
   if (!validPass) return { status: 'invalid', message: 'Email or password is wrong' };
 
-  const token = jsonwebtoken.sign({_id:  user._id}, process.env.TOKEN_SECRET)
-  response.header('auth-token', token);
+  const token = jsonwebtoken.sign({_id: user._id}, process.env.TOKEN_SECRET)
+  const header = ('auth-token', token);
 
   return `Witam ${user.name}!`;
 };
