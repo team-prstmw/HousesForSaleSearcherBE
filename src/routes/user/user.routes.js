@@ -1,4 +1,4 @@
-import { createUser, userLogin, userEdit } from '../../controllers/user.controllers';
+import { createUser, userLogin, userEdit, passwdEdit } from '../../controllers/user.controllers';
 import { StatusCodes } from 'http-status-codes';
 
 const userRoutes = (router) => {
@@ -24,6 +24,16 @@ const userRoutes = (router) => {
 
   router.patch('/users/:id', async (req, res) => {
     const response = await userEdit(req);
+
+    if (response.status === 'invalid') {
+      return res.status(StatusCodes.BAD_REQUEST).json(response);
+    }
+
+    return res.status(StatusCodes.CREATED).json(response);
+  });
+
+  router.patch('/users/:id/passwd', async (req, res) => {
+    const response = await passwdEdit(req);
 
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
