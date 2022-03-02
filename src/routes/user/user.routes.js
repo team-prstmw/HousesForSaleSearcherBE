@@ -1,5 +1,6 @@
 import { createUser, userLogin, userEdit, passwdEdit } from '../../controllers/user.controllers';
 import { StatusCodes } from 'http-status-codes';
+import auth from './verifyToken';
 
 const userRoutes = (router) => {
   router.post('/users', async (req, res) => {
