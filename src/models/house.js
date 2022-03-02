@@ -78,15 +78,6 @@ const housesSchema = new Schema({
         required: true
     },
     meta: {
-        created: {
-            type: Date,
-            default: Date.now(),
-            immutable: true
-        },
-        modified: {
-            type: Date,
-            default: Date.now()
-        },
         viewsCounter: {
             type: Number,
             default: 0
@@ -106,6 +97,8 @@ const housesSchema = new Schema({
             }
         },
     }
-})
+},
+{timestamps: true}
+)
 
 module.exports = mongoose.model('Houses', housesSchema)

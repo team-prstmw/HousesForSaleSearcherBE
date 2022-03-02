@@ -9,7 +9,5 @@ export const findAddress = async (addressData) => {
       'address.houseNr': houseNr,
       'address.flatNr': flatNr
     })
-    if (address === null) return { status: 'success'};
-    throw 'House with a given address already exists'}
-  ;
+    if (address) throw 'House with a given address already exists'};
 
