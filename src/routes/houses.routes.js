@@ -1,7 +1,7 @@
-import createNewHouseController from '../controllers/createNewHouse.controllers';
+import createNewHouseController from '../controllers/house.controllers';
 const { StatusCodes } = require( 'http-status-codes');
 
-const createNewHouseRoute = (router) => {
+const createNewHouseRoutes = (router) => {
     router.post('/create-new-house', async (req, res) => {
         const response = await createNewHouseController(req.body)
         if (!response || !response.status)
@@ -12,4 +12,4 @@ const createNewHouseRoute = (router) => {
     })
   }
 
-  export default createNewHouseRoute
+  export default createNewHouseRoutes

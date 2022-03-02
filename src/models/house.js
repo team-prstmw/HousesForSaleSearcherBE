@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 
-const housesSchema = new Schema({
+const HouseSchema = new Schema({
     houseId: {
         type: Schema.Types.ObjectId,
         default: new mongoose.Types.ObjectId
@@ -101,4 +101,4 @@ const housesSchema = new Schema({
 {timestamps: true}
 )
 
-module.exports = mongoose.model('Houses', housesSchema)
+module.exports = mongoose.model('Houses', HouseSchema)
