@@ -1,7 +1,8 @@
 import transactionModel from '../models/transaction';
+import userControllers from './user.controllers';
 
-const addTransaction = async (buyerId, sellerId, houseId, timestamp, price) => {
-  if (!buyerId || !sellerId || !houseId || !timestamp || !price) {
+const addTransaction = async (buyerId, sellerId, houseId, price) => {
+  if (!buyerId || !sellerId || !houseId || !price) {
     return;
   }
 
@@ -9,7 +10,6 @@ const addTransaction = async (buyerId, sellerId, houseId, timestamp, price) => {
     buyer: buyerId,
     seller: sellerId,
     house: houseId,
-    timestamp,
     price,
   });
 
@@ -19,9 +19,9 @@ const addTransaction = async (buyerId, sellerId, houseId, timestamp, price) => {
 export const buyHouse = async (data) => {
   const { buyerId, houseId, price } = data;
 
-  const buyer = await userController.getById(buyerId);
-  const house = await houseController.getById(houseId);
-  const seller = await userController.getById(house.owner);
+  const buyer = await userControllers.getById(buyerId);
+  const house = await houseControllers.getById(houseId);
+  const seller = await userControllers.getById(house.owner);
 
   if (!buyer || !buyer.id || !house || !house.id || !seller || !seller.id) {
     return { status: 'invalid', message: 'Transaction failed.' };
@@ -31,9 +31,9 @@ export const buyHouse = async (data) => {
     return { status: 'invalid', message: 'Not enough cash.' };
   }
 
-  await userController.getPayment(buyer.id, price);
-  await userController.addCash(seller.id, price);
-  await houseController.changeOwner(houseId, buyer.id);
+  await userControllers.getPayment(buyer.id, price);
+  await userControllers.addCash(seller.id, price);
+  await houseControllers.changeOwner(houseId, buyer.id);
 
   const transaction = await addTransaction(buyerId, seller.id, houseId, new Date(), price);
 
@@ -47,8 +47,8 @@ export const buyHouse = async (data) => {
 const getById = async (id) => {
   const transaction = await transactionModel.findById(id);
 
-  if (!transaction || !transaction.id) {
-    return { status: 'invalid', message: 'There is no transaction with that id.' };
+  if (!transaction || !transaction._id) {
+    return { status: 'invalid', message: 'There is no transaction with this id.' };
   }
 
   return { status: 'success', transaction };

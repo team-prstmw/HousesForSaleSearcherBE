@@ -34,3 +34,16 @@ export const userLogin = async (data) => {
 
   return `Witam ${user.name}!`;
 };
+
+export const getById = async (id) => {
+  const user = await User.findById(id);
+
+  if (!user || !user._id) {
+    return { status: 'invalid', message: 'There is no user with this id.' };
+  }
+
+  return { status: 'success', user };
+};
+
+
+export default {getById}

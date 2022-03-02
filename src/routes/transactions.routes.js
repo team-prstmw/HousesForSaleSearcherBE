@@ -32,8 +32,8 @@ const transactionRoutes = (router) => {
 
     return res.status(StatusCodes.CREATED).json(response);
   });
-  router.get('/transactions/', async (req, res) => {
 
+  router.get('/transactions/', async (req, res) => {
     const response = await transactionController.getAll();
     if (!response || !response.status) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status: 'server error' });
