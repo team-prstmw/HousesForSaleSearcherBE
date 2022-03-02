@@ -6,15 +6,17 @@ import logger from './utils/logger';
 
 let server;
 
-mongoose.connect(env.MONGODB_URL, {
-  useNewUrlParser: true,
-}).then(() => {
-  logger.info('Connected to MongoDB');
+mongoose
+  .connect(env.MONGODB_URL, {
+    useNewUrlParser: true,
+  })
+  .then(() => {
+    logger.info('Connected to MongoDB');
 
-  server = app.listen(env.PORT, () => {
-    logger.info(`Listening to port ${env.PORT}`);
+    server = app.listen(env.PORT, () => {
+      logger.info(`Listening to port ${env.PORT}`);
+    });
   });
-});
 
 const exitHandler = () => {
   if (server) {
