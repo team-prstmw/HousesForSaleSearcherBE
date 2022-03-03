@@ -2,6 +2,7 @@ import User from '../models/user';
 import { registerValidation, loginValidation, editValidation, passwdEditValidation } from '../routes/user/validation';
 import bcrypt from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
+import userUpdated from '../services/userUpdated';
 
 export const createUser = async (data) => {
   const { error } = registerValidation(data);
@@ -43,16 +44,7 @@ export const userEdit = async (req) => {
   const { error } = editValidation(req.body);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  const user = await User.findOneAndUpdate(
-    {
-      _id: req.params.id,
-    },
-    req.body,
-    { new: true }
-  );
-
-  if (!user) return { status: 'invalid', message: 'User not found' };
-  return { message: 'User updated' };
+  return userUpdated(req);
 };
 
 export const passwdEdit = async (req) => {
@@ -75,14 +67,5 @@ export const passwdEdit = async (req) => {
   const salt = await bcrypt.genSalt();
   req.body.password = await bcrypt.hash(req.body.password, salt);
 
-  const passwdUpdate = await User.findOneAndUpdate(
-    {
-      _id: req.params.id,
-    },
-    req.body,
-    { new: true }
-  );
-  if (!passwdUpdate) return { status: 'invalid', message: 'User not found' };
-
-  return { message: 'Password updated' };
+  return userUpdated(req);
 };
