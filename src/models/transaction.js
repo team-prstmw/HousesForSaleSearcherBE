@@ -3,7 +3,6 @@ const { Schema } = mongoose;
 
 const transactionSchema = Schema(
   {
-    _id: Schema.Types.ObjectId,
     buyer: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     seller: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     house: { type: Schema.Types.ObjectId, ref: 'House', required: true },

@@ -33,14 +33,14 @@ export const userLogin = async (data) => {
   const validPass = await bcrypt.compare(data.password, user.password);
   if (!validPass) return { status: 'invalid', message: 'Email or password is wrong' };
 
-  const token = jsonwebtoken.sign({_id:  user._id}, process.env.TOKEN_SECRET)
+  const token = jsonwebtoken.sign({ _id: user._id }, process.env.TOKEN_SECRET);
   response.header('auth-token', token);
 
   return `Witam ${user.name}!`;
 };
 
 export const getById = async (id) => {
-  const user = await User.findById(id);
+  const user = await User.findById(id).exec();
 
   if (!user || !user._id) {
     return { status: 'invalid', message: 'There is no user with this id.' };
@@ -49,5 +49,16 @@ export const getById = async (id) => {
   return { status: 'success', user };
 };
 
+export const getPayment = async (id, price) => {
+  const user = await User.findById(id).exec();
 
-export default {getById}
+  return user.update({ cash: user.cash - price }).exec();
+};
+
+export const addCash = async (id, price) => {
+  const user = await User.findById(id).exec();
+
+  return user.update({ cash: user.cash + price }).exec();
+};
+
+export default { getById, getPayment, addCash };
