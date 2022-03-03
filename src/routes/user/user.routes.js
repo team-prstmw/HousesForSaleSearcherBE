@@ -10,7 +10,7 @@ const userRoutes = (router) => {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
     }
 
-    return res.status(StatusCodes.ACCEPTED).json(response);
+    return res.status(StatusCodes.CREATED).json(response);
   });
 
   router.post('/login', async (req, res) => {
@@ -22,7 +22,7 @@ const userRoutes = (router) => {
 
     res.header(response.header);
 
-    return res.status(StatusCodes.CREATED).json(response);
+    return res.status(StatusCodes.OK).json(response);
   });
 
   router.patch('/users/:id', async (req, res) => {
@@ -32,7 +32,7 @@ const userRoutes = (router) => {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
     }
 
-    return res.status(StatusCodes.CREATED).json(response);
+    return res.status(StatusCodes.OK).json(response);
   });
 
   router.patch('/users/:id/passwd', async (req, res) => {
@@ -42,7 +42,7 @@ const userRoutes = (router) => {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
     }
 
-    return res.status(StatusCodes.CREATED).json(response);
+    return res.status(StatusCodes.OK).json(response);
   });
 };
 

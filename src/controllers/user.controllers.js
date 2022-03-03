@@ -1,14 +1,13 @@
 import User from '../models/user';
 import { registerValidation, loginValidation, editValidation, passwdEditValidation } from '../routes/user/validation';
 import bcrypt from 'bcryptjs';
-import updateUser from '../utils/updateUser';
 import jsonwebtoken from 'jsonwebtoken';
 
 export const createUser = async (data) => {
   const { error } = registerValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  const salt = await bcrypt.genSalt(10);
+  const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(data.password, salt);
   try {
     const user = await User.create({
@@ -44,8 +43,15 @@ export const userEdit = async (req) => {
   const { error } = editValidation(req.body);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  updateUser(req);
+  const user = await User.findOneAndUpdate(
+    {
+      _id: req.params.id,
+    },
+    req.body,
+    { new: true }
+  );
 
+  if (!user) return { status: 'invalid', message: 'User not found' };
   return { message: 'User updated' };
 };
 
@@ -66,10 +72,17 @@ export const passwdEdit = async (req) => {
 
   req.body.password = req.body.newPasswordRepeat;
   
-  const salt = await bcrypt.genSalt(10);
+  const salt = await bcrypt.genSalt();
   req.body.password = await bcrypt.hash(req.body.password, salt);
 
-  updateUser(req);
+  const passwdUpdate = await User.findOneAndUpdate(
+    {
+      _id: req.params.id,
+    },
+    req.body,
+    { new: true }
+  );
+  if (!passwdUpdate) return { status: 'invalid', message: 'User not found' };
 
   return { message: 'Password updated' };
 };
