@@ -12,4 +12,14 @@ const createNewHouseController = async (houseData) => {
   }
 };
 
+export const getAll = async () => {
+  const data = await House.find({}).exec();
+
+  if (!data || !data.length) {
+    return { status: 'error', message: 'Error while fetching objects.' };
+  }
+
+  return { status: 'success', data };
+};
+
 export default createNewHouseController;
