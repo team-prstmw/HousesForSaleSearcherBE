@@ -1,9 +1,9 @@
 import transactionModel from '../models/transaction';
 import userControllers from './user.controllers';
 import { getById as getHouseById, changeOwner as changeHouseOwner } from './house.controllers';
+import { getByIdAbstract } from '../services/dbMethods';
 
 const addTransaction = async (buyerId, sellerId, houseId, price) => {
-  console.log({ buyerId, sellerId, houseId, price });
   if (!buyerId || !sellerId || !houseId || !price) {
     return;
   }
@@ -21,9 +21,9 @@ const addTransaction = async (buyerId, sellerId, houseId, price) => {
 export const buyHouse = async (data) => {
   const { buyerId, houseId, price } = data;
 
-  let { user: buyer } = await userControllers.getById(buyerId);
-  let { house } = await getHouseById(houseId);
-  let { user: seller } = await userControllers.getById(house.owner);
+  let { data: buyer } = await userControllers.getById(buyerId);
+  let { data: house } = await getHouseById(houseId);
+  let { data: seller } = await userControllers.getById(house.owner);
 
   if (!buyer || !buyer._id || !house || !house._id || !seller || !seller._id) {
     return { status: 'invalid', message: 'Transaction failed.' };
@@ -33,7 +33,7 @@ export const buyHouse = async (data) => {
     return { status: 'invalid', message: 'Not enough cash.' };
   }
 
-  await userControllers.getPayment(buyer._id, price);
+  await userControllers.collectPayment(buyer._id, price);
   await userControllers.addCash(seller._id, price);
   await changeHouseOwner(houseId, buyer._id);
 
@@ -46,15 +46,7 @@ export const buyHouse = async (data) => {
   return { status: 'success', transaction };
 };
 
-const getById = async (id) => {
-  const transaction = await transactionModel.findById(id);
-
-  if (!transaction || !transaction._id) {
-    return { status: 'invalid', message: 'There is no transaction with this id.' };
-  }
-
-  return { status: 'success', transaction };
-};
+const getById = async (id) => getByIdAbstract(id, transactionModel);
 
 const getAll = async () => {
   const transactions = await transactionModel.find({});

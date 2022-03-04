@@ -30,7 +30,7 @@ const transactionRoutes = (router) => {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
     }
 
-    return res.status(StatusCodes.CREATED).json(response);
+    return res.status(StatusCodes.OK).json(response);
   });
 
   router.get('/transactions/', async (req, res) => {
@@ -43,7 +43,7 @@ const transactionRoutes = (router) => {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
     }
 
-    return res.status(StatusCodes.CREATED).json(response);
+    return res.status(StatusCodes.OK).json(response);
   });
 };
 

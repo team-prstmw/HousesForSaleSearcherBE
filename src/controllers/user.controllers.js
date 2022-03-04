@@ -2,6 +2,7 @@ import User from '../models/user';
 import { registerValidation, loginValidation } from '../routes/user/validation';
 import bcrypt from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
+import { getByIdAbstract } from '../services/dbMethods';
 
 export const createUser = async (data) => {
   const { error } = registerValidation(data);
@@ -39,17 +40,9 @@ export const userLogin = async (data) => {
   return `Witam ${user.name}!`;
 };
 
-export const getById = async (id) => {
-  const user = await User.findById(id).exec();
+export const getById = async (id) => getByIdAbstract(id, User);
 
-  if (!user || !user._id) {
-    return { status: 'invalid', message: 'There is no user with this id.' };
-  }
-
-  return { status: 'success', user };
-};
-
-export const getPayment = async (id, price) => {
+export const collectPayment = async (id, price) => {
   const user = await User.findById(id).exec();
 
   return user.update({ cash: user.cash - price }).exec();
@@ -61,4 +54,4 @@ export const addCash = async (id, price) => {
   return user.update({ cash: user.cash + price }).exec();
 };
 
-export default { getById, getPayment, addCash };
+export default { getById, collectPayment, addCash };
