@@ -11,5 +11,12 @@ const createNewHouseController = async (houseData) => {
     return { status: 'invalid', message: err };
   }
 };
-
+export const getById = async (id) => {
+  try {
+    const favorite = await favoriteModel.findById(id);
+    return { status: 'success', favorite };
+  } catch (err) {
+    return { status: 'invalid', message: 'There is no favorite with this ID' };
+  }
+};
 export default createNewHouseController;
