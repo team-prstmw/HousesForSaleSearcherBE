@@ -21,12 +21,26 @@ const addTransaction = async (buyerId, sellerId, houseId, price) => {
 export const buyHouse = async (data) => {
   const { buyerId, houseId, price } = data;
 
-  let { data: buyer } = await userControllers.getById(buyerId);
-  let { data: house } = await getHouseById(houseId);
-  let { data: seller } = await userControllers.getById(house.owner);
+  let buyerResponse = await userControllers.getById(buyerId);
+  let houseResponse = await getHouseById(houseId);
 
-  if (!buyer || !buyer._id || !house || !house._id || !seller || !seller._id) {
-    return { status: 'invalid', message: 'Transaction failed.' };
+  if (!buyerResponse.data || !houseResponse.data) {
+    return { status: 'invalid', message: "Buyer and/or house doesn't exist." };
+  }
+
+  const { data: buyer } = buyerResponse;
+  const { data: house } = houseResponse;
+
+  let sellerResponse = await userControllers.getById(house.owner);
+
+  if (!sellerResponse.data) {
+    return { status: 'invalid', message: "Owner of this house doesn't exist." };
+  }
+
+  const { data: seller } = sellerResponse;
+
+  if (buyer._id.toString() === seller._id.toString()) {
+    return { status: 'invalid', message: "You can't buy your own house." };
   }
 
   if (buyer.cash < price) {
