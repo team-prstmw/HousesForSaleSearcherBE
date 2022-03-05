@@ -2,7 +2,7 @@
   "plugins": ["simple-import-sort"],
   "extends": [
     "eslint:recommended",
-    "airbnb",
+    "airbnb-base",
     "airbnb/hooks",
     "plugin:react/jsx-runtime",
     "plugin:prettier/recommended"
@@ -34,7 +34,7 @@
       "files": ["**/?(*.)+(spec|test).ts?(x)", "jest.config.ts", "setupTests.ts"],
       "extends": [
         "plugin:jest/recommended",
-        "plugin:jest-dom/recommended",
+        // "plugin:jest-dom/recommended",
         "plugin:testing-library/react",
         "plugin:jest-formatting/recommended"
       ],
