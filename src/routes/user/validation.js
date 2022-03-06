@@ -1,11 +1,5 @@
 const Joi = require('@hapi/joi');
 
-const password = Joi.string().min(6).required().messages({
-    'string.min': `Password length must be at least 6 characters long`,
-    'string.empty': `Password must contain value`,
-    'any.required': `Password is a required field`,
-});
-
 const validateField = {
   name: Joi.string().min(6).messages({
     'string.min': `Name length must be at least 6 characters long`,
@@ -17,8 +11,11 @@ const validateField = {
     'string.empty': `Email must contain value`,
     'any.required': `Email is a required field`,
   }),
-  password: password,
-  newPassword: password,
+  password: Joi.string().min(6).required().messages({
+    'string.min': `Password length must be at least 6 characters long`,
+    'string.empty': `Password must contain value`,
+    'any.required': `Password is a required field`,
+  }),
   phone: Joi.string().pattern(new RegExp('^[0-9]+$')).length(9).messages({
     'string.pattern.base': `Phone number must be valid`,
     'string.length': `Phone number length must be 9 characters long`,
@@ -59,7 +56,7 @@ export const editValidation = (data) => {
 export const passwdEditValidation = (data) => {
   const schemaUser = Joi.object({
     password: Joi.required(),
-    newPassword: validateField.newPassword,
+    newPassword: validateField.password,
     newPasswordRepeat: Joi.required(),
   });
 
