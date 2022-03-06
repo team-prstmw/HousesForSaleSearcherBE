@@ -1,4 +1,4 @@
-import createNewHouseController, { getAll } from '../controllers/house.controllers';
+import createNewHouseController, { getHouseList } from '../controllers/house.controllers';
 const { StatusCodes } = require('http-status-codes');
 
 const createNewHouseRoutes = (router) => {
@@ -10,8 +10,8 @@ const createNewHouseRoutes = (router) => {
     res.status(StatusCodes.CREATED).json(response);
   });
 
-  router.get('/houses', async (req, res) => {
-    const response = await getAll();
+  router.get('/houses-list', async (req, res) => {
+    const response = await getHouseList();
 
     if (!response || !response.status) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status: 'server error' });
