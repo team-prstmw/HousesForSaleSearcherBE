@@ -2,6 +2,7 @@ import User from '../models/user';
 import { registerValidation, loginValidation } from '../routes/user/validation';
 import bcrypt from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
+import { getByIdAbstract } from '../services/dbMethods';
 
 export const createUser = async (data) => {
   const { error } = registerValidation(data);
@@ -33,8 +34,24 @@ export const userLogin = async (data) => {
   const validPass = await bcrypt.compare(data.password, user.password);
   if (!validPass) return { status: 'invalid', message: 'Email or password is wrong' };
 
-  const token = jsonwebtoken.sign({_id:  user._id}, process.env.TOKEN_SECRET)
+  const token = jsonwebtoken.sign({ _id: user._id }, process.env.TOKEN_SECRET);
   response.header('auth-token', token);
 
   return `Witam ${user.name}!`;
 };
+
+export const getById = async (id) => getByIdAbstract(id, User);
+
+export const collectPayment = async (id, price) => {
+  const user = await User.findById(id).exec();
+
+  return user.update({ cash: user.cash - price }).exec();
+};
+
+export const addCash = async (id, price) => {
+  const user = await User.findById(id).exec();
+
+  return user.update({ cash: user.cash + price }).exec();
+};
+
+export default { getById, collectPayment, addCash };

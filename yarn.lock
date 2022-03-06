@@ -5097,12 +5097,12 @@ __metadata:
   linkType: hard
 
 "mongodb-connection-string-url@npm:^2.4.1":
-  version: 2.5.1
-  resolution: "mongodb-connection-string-url@npm:2.5.1"
+  version: 2.5.2
+  resolution: "mongodb-connection-string-url@npm:2.5.2"
   dependencies:
     "@types/whatwg-url": ^8.2.1
     whatwg-url: ^11.0.0
-  checksum: 8ff6c5b0cb4a061a88c084ad9600176e1fa332c369134139ff5f278cdff99b5b6ce959b8cb254799b94969b617106dcfd7d0119f2632981302b3a9417814c43b
+  checksum: bd13af7d62d33e2d6e5217692961e34b2dafbbba5f41d361417257592754df3e925efc00fa8a5e038624e284245dab39e913d5f06ff962feede86d5f58fc5827
   languageName: node
   linkType: hard
 

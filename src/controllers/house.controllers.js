@@ -1,5 +1,6 @@
 import House from '../models/house';
 import { findAddress } from '../services/findAddress';
+import { getByIdAbstract } from '../services/dbMethods';
 
 const createNewHouseController = async (houseData) => {
   const house = new House(houseData);
@@ -26,6 +27,12 @@ export const houseDeletion = async (request, response) => {
   );
 
   response.send('House was deleted');
+};
+
+export const getById = async (id) => getByIdAbstract(id, House);
+
+export const changeOwner = async (id, userId) => {
+  return House.findByIdAndUpdate(id, { owner: userId }).exec();
 };
 
 export default createNewHouseController;
