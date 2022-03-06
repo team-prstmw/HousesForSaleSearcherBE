@@ -11,12 +11,21 @@ const createNewHouseController = async (houseData) => {
     return { status: 'invalid', message: err };
   }
 };
-export const getById = async (id) => {
-  try {
-    const favorite = await favoriteModel.findById(id);
-    return { status: 'success', favorite };
-  } catch (err) {
-    return { status: 'invalid', message: 'There is no favorite with this ID' };
-  }
+
+export const houseDeletion = async (request, response) => {
+  const houseExists = await House.findOne({ _id: request.params.id });
+
+  if (!houseExists || houseExists.houseStatus == 0)
+    return response.status(StatusCodes.BAD_REQUEST).send({ message: 'House not found' });
+
+  await House.findOneAndUpdate(
+    {
+      _id: request.params.id,
+    },
+    { houseStatus: 0 }
+  );
+
+  response.send('House was deleted');
 };
+
 export default createNewHouseController;

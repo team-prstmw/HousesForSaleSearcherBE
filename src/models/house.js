@@ -7,6 +7,10 @@ const HouseSchema = new Schema(
       type: Schema.Types.ObjectId,
       default: new mongoose.Types.ObjectId(),
     },
+    houseStatus: {
+      type: Number,
+      default: 1,
+    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
