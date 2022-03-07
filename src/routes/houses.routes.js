@@ -1,4 +1,4 @@
-import createNewHouseController from '../controllers/house.controllers';
+import { createNewHouseController } from '../controllers/house.controllers';
 const { StatusCodes } = require('http-status-codes');
 
 const createNewHouseRoutes = (router) => {
