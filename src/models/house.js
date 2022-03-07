@@ -78,6 +78,11 @@ const HouseSchema = new Schema(
       type: Number,
       required: true,
     },
+    status: {
+      type: String,
+      default: 'availible',
+      required: true,
+    },
     meta: {
       viewsCounter: {
         type: Number,
