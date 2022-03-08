@@ -13,20 +13,20 @@ const createNewHouseController = async (houseData) => {
   }
 };
 
-export const houseDeletion = async (request, response) => {
-  const houseExists = await House.findOne({ _id: request.params.id });
-
-  if (!houseExists || houseExists.houseStatus == 0)
-    return response.status(StatusCodes.BAD_REQUEST).send({ message: 'House not found' });
-
-  await House.findOneAndUpdate(
+export const houseDeletion = async (_id) => {
+  const house = await House.findOneAndUpdate(
     {
-      _id: request.params.id,
+      _id,
+      houseStatus: { $not: { $eq: 0 } },
     },
     { houseStatus: 0 }
   );
 
-  response.send('House was deleted');
+  if (!house || !house._id) {
+    return { status: 'error', message: 'House was not found.' };
+  }
+
+  return { status: 'success', message: 'House was deleted.' };
 };
 
 export const getById = async (id) => getByIdAbstract(id, House);

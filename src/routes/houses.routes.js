@@ -12,7 +12,8 @@ const createNewHouseRoutes = (router) => {
   });
 
   router.patch('/houses/:id', auth, async (req, res) => {
-    houseDeletion(req, res);
+    const { id } = req.params;
+    houseDeletion(id);
   });
 };
 
