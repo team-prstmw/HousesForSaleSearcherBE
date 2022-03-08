@@ -10,8 +10,13 @@ export const createUser = async (data) => {
   const { error } = registerValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  const userExist = await User.findOne({ email: data.email });
-  if (userExist && userExist.statusUser === 1) return { status: 'invalid', message: 'Email already exists' };
+  const users = await User.find({ email: data.email });
+
+  const userExist = users.filter((user) => {
+    if (user.statusUser === 1) return user;
+  });
+
+  if (userExist[0] && userExist[0].statusUser === 1) return { status: 'invalid', message: 'Email already exists' };
 
   const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(data.password, salt);
