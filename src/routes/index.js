@@ -1,15 +1,19 @@
+import cookieParser from 'cookie-parser';
 import { Router } from 'express';
 
+import favoritesRoutes from './favorites.routes';
 import helloControllers from './hello.routes';
-import favoritesControllers from './favorites.routes';
-import userRoutes from './user/userRoute';
-import cookieParser from 'cookie-parser';
+import createNewHouseRoutes from './houses.routes';
+import transactionRoutes from './transactions.routes';
+import userRoutes from './user/user.routes';
 
 const router = Router();
 
 router.use(cookieParser());
 helloControllers(router);
-favoritesControllers(router);
+transactionRoutes(router);
 userRoutes(router);
+favoritesRoutes(router);
+createNewHouseRoutes(router);
 
 export default router;

@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import { addToFavorite } from '../controllers/favorites.controllers';
 
-const favoritesControllers = (router) => {
+const favoritesRoutes = (router) => {
   router.post('/favorites', async (req, res) => {
     const response = await addToFavorite(req.body); // {userId: '123', houseId: '321'}
     if (!response || !response.status) {
@@ -14,4 +14,4 @@ const favoritesControllers = (router) => {
   });
 };
 
-export default favoritesControllers;
+export default favoritesRoutes;
