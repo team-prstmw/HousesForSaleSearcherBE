@@ -5,11 +5,11 @@ import handleResponse from '../utils/handleResponse';
 const favoritesRoutes = (router) => {
   router.post('/favorites', async (req, res) => {
     const response = await addToFavorite(req.body); // {userId: '123', houseId: '321'}
-    handleResponse(response, res);
+    handleResponse(response, res, response.status, 'POST');
   });
   router.get('/favorites', async (req, res) => {
     const response = await findAllFavorites();
-    handleResponse(response, res, response.status);
+    handleResponse(response, res, response.status, 'GET');
   });
 };
 
