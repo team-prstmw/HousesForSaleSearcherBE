@@ -20,9 +20,9 @@ const UserSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
+    cash: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }
