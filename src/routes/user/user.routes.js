@@ -46,13 +46,20 @@ const userRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
+  router.patch('/users/:id/deletion', async (req, res) => {
+    const response = await userDeletion(req.params);
+    res.clearCookie('auth');
+
+    if (response.status === 'invalid') {
+      return res.status(StatusCodes.BAD_REQUEST).json(response);
+    }
+
+    return res.status(StatusCodes.OK).json(response);
+  });
+
   router.get('/logout', auth, (req, res) => {
     res.clearCookie('auth');
     return res.status(StatusCodes.NO_CONTENT).json('Wylogowano');
-  });
-
-  router.patch('/users/:id', auth, async (req, res) => {
-    userDeletion(req, res);
   });
 };
 
