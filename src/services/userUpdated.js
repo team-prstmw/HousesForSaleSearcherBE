@@ -1,12 +1,12 @@
 import User from '../models/user';
 
-const userUpdated = async (req) => {
+const userUpdated = async (data, id) => {
   try {
     const user = await User.findOneAndUpdate(
       {
-        _id: req.params.id,
+        _id: id.id,
       },
-      req.body,
+      data,
       { new: true }
     );
 

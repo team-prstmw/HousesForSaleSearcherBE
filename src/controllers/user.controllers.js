@@ -40,32 +40,32 @@ export const userLogin = async (data) => {
   return `Witam ${user.name}!`;
 };
 
-export const userEdit = async (req) => {
-  const { error } = editValidation(req.body);
+export const userEdit = async (data, id) => {
+  const { error } = editValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  return userUpdated(req);
+  return userUpdated(data, id);
 };
 
-export const passwdEdit = async (req) => {
-  const { error } = passwdEditValidation(req.body);
+export const passwdEdit = async (data, id) => {
+  const { error } = passwdEditValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  const user = await User.findOne({ _id: req.params.id });
+  const user = await User.findOne({ _id: id.id });
   if (!user) return { status: 'invalid', message: 'User not found.' };
 
-  const validOldPass = await bcrypt.compare(req.body.password, user.password);
+  const validOldPass = await bcrypt.compare(data.password, user.password);
   if (!validOldPass) return { status: 'invalid', message: 'Old password is wrong.' };
   
-  if (!(req.body.newPassword == req.body.newPasswordRepeat)) return { status: 'invalid', message: 'The passwords do not match.' };
+  if (!(data.newPassword == data.newPasswordRepeat)) return { status: 'invalid', message: 'The passwords do not match.' };
 
-  const difOldNewPass = await bcrypt.compare(req.body.newPasswordRepeat, user.password);
+  const difOldNewPass = await bcrypt.compare(data.newPasswordRepeat, user.password);
   if (difOldNewPass) return { status: 'invalid', message: 'The old password and the new password must be different.' };
 
-  req.body.password = req.body.newPasswordRepeat;
+  data.password = data.newPasswordRepeat;
   
   const salt = await bcrypt.genSalt();
-  req.body.password = await bcrypt.hash(req.body.password, salt);
+  data.password = await bcrypt.hash(data.password, salt);
 
-  return userUpdated(req);
+  return userUpdated(data, id);
 };

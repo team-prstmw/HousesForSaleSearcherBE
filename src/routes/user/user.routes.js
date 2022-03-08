@@ -26,7 +26,7 @@ const userRoutes = (router) => {
   });
 
   router.patch('/users/:id', async (req, res) => {
-    const response = await userEdit(req);
+    const response = await userEdit(req.body, req.params);
 
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
@@ -36,7 +36,7 @@ const userRoutes = (router) => {
   });
 
   router.patch('/users/:id/passwd', async (req, res) => {
-    const response = await passwdEdit(req);
+    const response = await passwdEdit(req.body, req.params);
 
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
