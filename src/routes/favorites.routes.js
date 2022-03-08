@@ -2,7 +2,7 @@ import { addToFavorite } from '../controllers/favorites.controllers';
 import { findAllFavorites } from '../controllers/favorites.controllers';
 import handleResponse from '../utils/handleResponse';
 
-const favoritesControllers = (router) => {
+const favoritesRoutes = (router) => {
   router.post('/favorites', async (req, res) => {
     const response = await addToFavorite(req.body); // {userId: '123', houseId: '321'}
     handleResponse(response, res);
@@ -13,4 +13,4 @@ const favoritesControllers = (router) => {
   });
 };
 
-export default favoritesControllers;
+export default favoritesRoutes;
