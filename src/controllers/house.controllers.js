@@ -15,6 +15,10 @@ export const createNewHouseController = async (houseData) => {
 
 export const getById = async (id) => getByIdAbstract(id, House);
 
+export const getHouseDetails = async (id) => {
+  return getByIdAbstract(id, House);
+};
+
 export const changeOwner = async (id, userId) => {
   return House.findByIdAndUpdate(id, { owner: userId }).exec();
 };
