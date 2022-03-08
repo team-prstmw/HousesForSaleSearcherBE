@@ -3,10 +3,6 @@ const { Schema } = mongoose;
 
 const HouseSchema = new Schema(
   {
-    houseId: {
-      type: Schema.Types.ObjectId,
-      default: new mongoose.Types.ObjectId(),
-    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
