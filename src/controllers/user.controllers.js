@@ -31,18 +31,16 @@ export const userLogin = async (data) => {
   if (error) return { status: 'invalid', message: error.details[0].message };
 
   // const user = await User.findOne({ email: data.email });
-  const user = await User.findOne({ email: 'HasloToTest123@gmail.com' });
+  const user = await User.findOne({ email: 'Patryk123@gmail.com' });
   if (!user) return { status: 'invalid', message: 'Email or password is wrong' };
-
   // const validPass = await bcrypt.compare(data.password, user.password);
-  const validPass = await bcrypt.compare('Test123', user.password);
+  const validPass = await bcrypt.compare('test123', user.password);
   if (!validPass) return { status: 'invalid', message: 'Email or password is wrong' };
 
+  // Zapytać o to
   const token = jsonwebtoken.sign({ _id: user._id }, process.env.TOKEN_SECRET);
 
-  // response.cookie('auth', token, { maxAge: 900000, httpOnly: true }); // Tutaj naprawić
-
-  return `Witam ${user.name}!`;
+  return { message: { token, message: `Witam ${user.name}!` } };
 };
 
 export const userEdit = async (data, id) => {

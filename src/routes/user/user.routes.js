@@ -1,12 +1,9 @@
-import { createUser, userLogin, userEdit, passwdEdit } from '../../controllers/user.controllers';
 import { StatusCodes } from 'http-status-codes';
+
+import { createUser, passwdEdit, userEdit, userLogin } from '../../controllers/user.controllers';
 import auth from './verifyToken';
 
 const userRoutes = (router) => {
-  router.get('/', (req, res) => {
-    res.send('Strona główna zostałeś wylogowany');
-  });
-
   router.post('/users', async (req, res) => {
     const response = await createUser(req.body);
 
@@ -20,16 +17,16 @@ const userRoutes = (router) => {
   router.get('/login', async (req, res) => {
     const response = await userLogin(req.body);
 
+    res.cookie('auth', response.message.token, { maxAge: 900000, httpOnly: true });
+
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
     }
 
-    res.header(response.header);
-
     return res.status(StatusCodes.OK).json(response);
   });
 
-  router.patch('/users/:id', async (req, res) => {
+  router.patch('/users/:id', auth, async (req, res) => {
     const response = await userEdit(req.body, req.params);
 
     if (response.status === 'invalid') {
@@ -39,7 +36,7 @@ const userRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
-  router.patch('/users/:id/passwd', async (req, res) => {
+  router.patch('/users/:id/passwd', auth, async (req, res) => {
     const response = await passwdEdit(req.body, req.params);
 
     if (response.status === 'invalid') {
@@ -51,7 +48,7 @@ const userRoutes = (router) => {
 
   router.get('/logout', auth, (req, res) => {
     res.clearCookie('auth');
-    return res.redirect('/api/');
+    return res.status(StatusCodes.NO_CONTENT).json('Wylogowano');
   });
 };
 
