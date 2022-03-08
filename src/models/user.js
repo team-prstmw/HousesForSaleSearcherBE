@@ -20,6 +20,10 @@ const UserSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    cash: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
