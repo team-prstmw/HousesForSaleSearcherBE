@@ -8,56 +8,55 @@ const HouseSchema = new Schema(
       ref: 'User',
       required: true,
     },
-    address: {
-      country: {
-        type: String,
-        required: true,
-      },
-      region: {
-        type: String,
-      },
-      city: {
-        type: String,
-        required: true,
-      },
-      district: {
-        type: String,
-      },
-      street: {
-        type: String,
-        required: true,
-      },
-      houseNr: {
-        type: String,
-        required: true,
-      },
-      flatNr: {
-        type: String,
-        default: '',
-      },
+    description: {
+      type: String,
+    },
+    country: {
+      type: String,
+      required: true,
+    },
+    region: {
+      type: String,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    district: {
+      type: String,
+    },
+    street: {
+      type: String,
+      required: true,
+    },
+    houseNr: {
+      type: String,
+      required: true,
+    },
+    flatNr: {
+      type: String,
+      default: '',
     },
     houseType: {
       type: String,
       required: true,
     },
-    attributes: {
-      nrOfRooms: {
-        type: Number,
-        required: true,
-      },
-      nrOfBathrooms: {
-        type: Number,
-        required: true,
-      },
-      floors: {
-        type: Number,
-        required: true,
-      },
-      heating: {
-        type: String,
-        required: true,
-        lowercase: true,
-      },
+    nrOfRooms: {
+      type: Number,
+      required: true,
+    },
+    nrOfBathrooms: {
+      type: Number,
+      required: true,
+    },
+    floors: {
+      type: Number,
+      required: true,
+    },
+    heating: {
+      type: String,
+      required: true,
+      lowercase: true,
     },
     otherFeatures: {
       type: Array,
@@ -74,29 +73,29 @@ const HouseSchema = new Schema(
       type: Number,
       required: true,
     },
-    status: {
-      type: String,
-      default: 'availible',
-      required: true,
+    images: {
+      type: Array,
     },
-    meta: {
-      viewsCounter: {
+    status: {
+      type: Number,
+      default: 0,
+    },
+    viewsCounter: {
+      type: Number,
+      default: 0,
+    },
+    favoritesCounter: {
+      type: Number,
+      default: 0,
+    },
+    location: {
+      lat: {
         type: Number,
-        default: 0,
+        required: true,
       },
-      favoritesCounter: {
+      lng: {
         type: Number,
-        default: 0,
-      },
-      location: {
-        lat: {
-          type: Number,
-          required: true,
-        },
-        lng: {
-          type: Number,
-          required: true,
-        },
+        required: true,
       },
     },
   },
