@@ -8,7 +8,7 @@ const HouseSchema = new Schema(
       ref: 'User',
       required: true,
     },
-    description: {
+    descriptionField: {
       type: String,
     },
     country: {
@@ -37,19 +37,19 @@ const HouseSchema = new Schema(
       type: String,
       default: '',
     },
-    houseType: {
+    propertyType: {
       type: String,
       required: true,
     },
-    nrOfRooms: {
+    roomsNumber: {
       type: Number,
       required: true,
     },
-    nrOfBathrooms: {
+    bathroomNumber: {
       type: Number,
       required: true,
     },
-    floors: {
+    floorsInBuilding: {
       type: Number,
       required: true,
     },
@@ -62,7 +62,7 @@ const HouseSchema = new Schema(
       type: Array,
       default: [],
     },
-    constructionDate: {
+    yearBuilt: {
       type: Number,
     },
     area: {
