@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const { Schema } = mongoose;
 
 const HouseSchema = new Schema(
@@ -55,7 +56,6 @@ const HouseSchema = new Schema(
     },
     heating: {
       type: String,
-      required: true,
       lowercase: true,
     },
     otherFeatures: {

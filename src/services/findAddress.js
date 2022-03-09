@@ -1,13 +1,15 @@
 import createNewHouse from '../models/house';
 
 export const findAddress = async (addressData) => {
-  const { country, city, street, houseNr, flatNr } = { ...addressData };
+  const { country, city, street, houseNr, flatNr } = addressData;
+  console.log(country);
   const address = await createNewHouse.findOne({
-    'address.country': country,
-    'address.city': city,
-    'address.street': street,
-    'address.houseNr': houseNr,
-    'address.flatNr': flatNr,
+    country,
+    city,
+    street,
+    houseNr,
+    flatNr,
   });
+  // eslint-disable-next-line no-throw-literal
   if (address) throw 'House with a given address already exists';
 };
