@@ -6,17 +6,16 @@ import { editValidation, loginValidation, passwdEditValidation, registerValidati
 import { getByIdAbstract } from '../services/dbMethods';
 import userUpdated from '../services/userUpdated';
 
+const USER_ACTIVE = 1;
+
 export const createUser = async (data) => {
   const { error } = registerValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  const users = await User.find({ email: data.email });
+  const userExist = await User.find({ email: data.email, status: { $eq: 1 } });
 
-  const userExist = users.filter((user) => {
-    if (user.statusUser === 1) return user;
-  });
-
-  if (userExist[0] && userExist[0].statusUser === 1) return { status: 'invalid', message: 'Email already exists' };
+  if (userExist[0] && userExist[0].status === USER_ACTIVE)
+    return { status: 'invalid', message: 'Email already exists' };
 
   const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(data.password, salt);
@@ -38,20 +37,16 @@ export const userLogin = async (data) => {
   const { error } = loginValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  const users = await User.find({ email: data.email });
-  const activeUser = users.filter((user) => {
-    if (user.statusUser === 1) return user;
-  });
+  const activeUser = await User.find({ email: data.email, status: { $eq: 1 } });
 
-  if (!activeUser[0] || activeUser[0].statusUser === 0)
-    return { status: 'invalid', message: 'Email or password is wrong' };
+  if (!activeUser[0] || activeUser[0].status === 0) return { status: 'invalid', message: 'Email or password is wrong' };
 
   const validPass = await bcrypt.compare(data.password, activeUser[0].password);
   if (!validPass) return { status: 'invalid', message: 'Email or password is wrong' };
 
   const token = jsonwebtoken.sign({ _id: activeUser[0]._id }, process.env.TOKEN_SECRET);
 
-  return { message: { token, message: `Witam ${activeUser[0].name}!` } };
+  return { token, message: `Witam ${activeUser[0].name}!` };
 };
 
 export const userEdit = async (data, id) => {
@@ -84,20 +79,19 @@ export const passwdEdit = async (data, id) => {
   return userUpdated(data, id);
 };
 
-export const userDeletion = async (id) => {
-  const userExist = await User.findOne({ _id: id.id });
+export const deleteUser = async (id) => {
+  const userExist = await User.findOne({ _id: id });
 
-  if (!userExist || userExist.statusUser === 0) return { status: 'invalid', message: 'User not found' };
+  if (!userExist || userExist.status === 0) return { status: 'invalid', message: 'User not found' };
 
   await User.findOneAndUpdate(
     {
-      _id: id.id,
+      _id: id,
     },
-    { statusUser: 0 },
-    { new: true }
+    { status: 0 }
   );
 
-  return 'The account has been deleted';
+  return { message: 'The account has been deleted' };
 };
 
 export const getById = async (id) => getByIdAbstract(id, User);

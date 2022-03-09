@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 
-import { createUser, passwdEdit, userDeletion, userEdit, userLogin } from '../../controllers/user.controllers';
+import { createUser, deleteUser, passwdEdit, userEdit, userLogin } from '../../controllers/user.controllers';
 import auth from '../../middlewares/verifyToken';
 
 const userRoutes = (router) => {
@@ -46,7 +46,7 @@ const userRoutes = (router) => {
   });
 
   router.patch('/users/:id/deletion', async (req, res) => {
-    const response = await userDeletion(req.params);
+    const response = await deleteUser(req.params.id);
     res.clearCookie('auth');
 
     if (response.status === 'invalid') {
@@ -58,7 +58,7 @@ const userRoutes = (router) => {
 
   router.post('/logout', auth, (req, res) => {
     res.clearCookie('auth');
-    return res.status(StatusCodes.OK).json('Logged out');
+    return res.status(StatusCodes.OK).json({ message: 'Logged out' });
   });
 };
 
