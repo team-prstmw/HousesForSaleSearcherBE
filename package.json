@@ -14,12 +14,14 @@
     "build": "yarn build",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint src/"
   },
   "dependencies": {
     "@hapi/joi": "17.1.1",
     "bcryptjs": "2.4.3",
     "compression": "1.7.4",
+    "cookie-parser": "1.4.6",
     "dotenv": "16.0.0",
     "esm": "3.2.25",
     "express": "4.17.1",
@@ -31,18 +33,25 @@
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "2.2.0",
+    "airbnb": "0.0.2",
     "eslint": "7.32.0",
+    "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-import": "2.24.2",
     "eslint-plugin-jest": "24.4.2",
-    "eslint-plugin-jest-dom": "3.9.2",
+    "eslint-plugin-jest-dom": "4.0.1",
     "eslint-plugin-jest-formatting": "3.0.0",
     "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-react": "7.29.3",
+    "eslint-plugin-react-hooks": "4.3.0",
     "eslint-plugin-simple-import-sort": "7.0.0",
+    "eslint-plugin-testing-library": "5.0.6",
     "jest": "27.5.1",
+    "jest-dom": "4.0.0",
     "nodemon": "2.0.12",
-    "prettier": "2.4.1"
+    "prettier": "2.4.1",
+    "pretty-format": "27.5.1"
   },
   "packageManager": "yarn@3.0.2"
 }
