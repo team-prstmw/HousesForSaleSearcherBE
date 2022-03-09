@@ -1,9 +1,10 @@
-import User from '../models/user';
-import { registerValidation, loginValidation, editValidation, passwdEditValidation } from '../routes/user/validation';
 import bcrypt from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
-import userUpdated from '../services/userUpdated';
+
+import User from '../models/user';
+import { editValidation, loginValidation, passwdEditValidation, registerValidation } from '../routes/user/validation';
 import { getByIdAbstract } from '../services/dbMethods';
+import userUpdated from '../services/userUpdated';
 
 export const createUser = async (data) => {
   const { error } = registerValidation(data);
@@ -36,9 +37,8 @@ export const userLogin = async (data) => {
   if (!validPass) return { status: 'invalid', message: 'Email or password is wrong' };
 
   const token = jsonwebtoken.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-  const header = ('auth-token', token);
 
-  return `Witam ${user.name}!`;
+  return { token, message: `Welcome ${user.name}!` };
 };
 
 export const userEdit = async (data, id) => {
@@ -52,14 +52,13 @@ export const passwdEdit = async (data, id) => {
   const { error } = passwdEditValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  const user = await User.findOne({ _id: id.id });
+  const user = await User.findOne({ _id: id });
   if (!user) return { status: 'invalid', message: 'User not found.' };
 
   const validOldPass = await bcrypt.compare(data.password, user.password);
   if (!validOldPass) return { status: 'invalid', message: 'Old password is wrong.' };
 
-  if (!(data.newPassword == data.newPasswordRepeat))
-    return { status: 'invalid', message: 'The passwords do not match.' };
+  if (data.newPassword !== data.newPasswordRepeat) return { status: 'invalid', message: 'The passwords do not match.' };
 
   const difOldNewPass = await bcrypt.compare(data.newPasswordRepeat, user.password);
   if (difOldNewPass) return { status: 'invalid', message: 'The old password and the new password must be different.' };
