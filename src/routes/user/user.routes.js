@@ -47,7 +47,7 @@ const userRoutes = (router) => {
 
   router.post('/logout', auth, (req, res) => {
     res.clearCookie('auth');
-    return res.status(StatusCodes.NO_CONTENT).json('Logged out');
+    return res.status(StatusCodes.OK).json('Logged out');
   });
 };
 
