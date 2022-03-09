@@ -76,7 +76,7 @@ const HouseSchema = new Schema(
     images: {
       type: Array,
     },
-    status: {
+    houseStatus: {
       type: Number,
       default: 0,
     },

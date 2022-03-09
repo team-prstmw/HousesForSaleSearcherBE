@@ -13,6 +13,9 @@ const housesRoutes = (router) => {
 
   router.get('/house/:id', async (req, res) => {
     const response = await getHouseDetails(req.params.id);
+    if (!response || !response.status)
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status: 'server error' });
+    if (response.status === 'invalid') return res.status(StatusCodes.BAD_REQUEST).json(response);
     res.status(StatusCodes.OK).json(response);
   });
 };
