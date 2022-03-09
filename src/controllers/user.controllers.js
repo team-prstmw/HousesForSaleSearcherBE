@@ -30,17 +30,15 @@ export const userLogin = async (data) => {
   const { error } = loginValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  // const user = await User.findOne({ email: data.email });
-  const user = await User.findOne({ email: 'Patryk123@gmail.com' });
+  const user = await User.findOne({ email: data.email });
   if (!user) return { status: 'invalid', message: 'Email or password is wrong' };
-  // const validPass = await bcrypt.compare(data.password, user.password);
-  const validPass = await bcrypt.compare('test123', user.password);
+
+  const validPass = await bcrypt.compare(data.password, user.password);
   if (!validPass) return { status: 'invalid', message: 'Email or password is wrong' };
 
-  // Zapytać o to
   const token = jsonwebtoken.sign({ _id: user._id }, process.env.TOKEN_SECRET);
 
-  return { message: { token, message: `Witam ${user.name}!` } };
+  return { token, message: `Welcome ${user.name}!` };
 };
 
 export const userEdit = async (data, id) => {
@@ -54,14 +52,13 @@ export const passwdEdit = async (data, id) => {
   const { error } = passwdEditValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  const user = await User.findOne({ _id: id.id });
+  const user = await User.findOne({ _id: id });
   if (!user) return { status: 'invalid', message: 'User not found.' };
 
   const validOldPass = await bcrypt.compare(data.password, user.password);
   if (!validOldPass) return { status: 'invalid', message: 'Old password is wrong.' };
 
-  if (!(data.newPassword === data.newPasswordRepeat))
-    return { status: 'invalid', message: 'The passwords do not match.' };
+  if (data.newPassword !== data.newPasswordRepeat) return { status: 'invalid', message: 'The passwords do not match.' };
 
   const difOldNewPass = await bcrypt.compare(data.newPasswordRepeat, user.password);
   if (difOldNewPass) return { status: 'invalid', message: 'The old password and the new password must be different.' };
