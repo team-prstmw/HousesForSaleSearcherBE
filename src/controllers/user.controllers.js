@@ -38,8 +38,7 @@ export const userLogin = async (data) => {
   const { error } = loginValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  // const users = await User.find({ email: data.email });
-  const users = await User.find({ email: 'Patryk123@gmail.com' }); // Dodano na czas testowania
+  const users = await User.find({ email: data.email });
   const activeUser = users.filter((user) => {
     if (user.statusUser === 1) return user;
   });
@@ -47,13 +46,10 @@ export const userLogin = async (data) => {
   if (!activeUser[0] || activeUser[0].statusUser === 0)
     return { status: 'invalid', message: 'Email or password is wrong' };
 
-  // const validPass = await bcrypt.compare(data.password, activeUser[0].password);
-  const validPass = await bcrypt.compare('test123', activeUser[0].password); // Dodano na czas testowania
+  const validPass = await bcrypt.compare(data.password, activeUser[0].password);
   if (!validPass) return { status: 'invalid', message: 'Email or password is wrong' };
 
   const token = jsonwebtoken.sign({ _id: activeUser[0]._id }, process.env.TOKEN_SECRET);
-
-  // Zapytać o to
 
   return { message: { token, message: `Witam ${activeUser[0].name}!` } };
 };
@@ -69,14 +65,13 @@ export const passwdEdit = async (data, id) => {
   const { error } = passwdEditValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  const user = await User.findOne({ _id: id.id });
+  const user = await User.findOne({ _id: id });
   if (!user) return { status: 'invalid', message: 'User not found.' };
 
   const validOldPass = await bcrypt.compare(data.password, user.password);
   if (!validOldPass) return { status: 'invalid', message: 'Old password is wrong.' };
 
-  if (!(data.newPassword === data.newPasswordRepeat))
-    return { status: 'invalid', message: 'The passwords do not match.' };
+  if (data.newPassword !== data.newPasswordRepeat) return { status: 'invalid', message: 'The passwords do not match.' };
 
   const difOldNewPass = await bcrypt.compare(data.newPasswordRepeat, user.password);
   if (difOldNewPass) return { status: 'invalid', message: 'The old password and the new password must be different.' };
