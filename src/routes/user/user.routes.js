@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 
-import { createUser, passwdEdit, userEdit, userLogin } from '../../controllers/user.controllers';
+import { createUser, getUserHouses, passwdEdit, userEdit, userLogin } from '../../controllers/user.controllers';
 import auth from '../../middlewares/verifyToken';
 
 const userRoutes = (router) => {
@@ -48,6 +48,16 @@ const userRoutes = (router) => {
   router.post('/logout', auth, (req, res) => {
     res.clearCookie('auth');
     return res.status(StatusCodes.OK).json('Logged out');
+  });
+
+  router.get('/users/my-houses', auth, async (req, res) => {
+    const response = await getUserHouses(req.user._id);
+
+    if (response.status === 'invalid') {
+      return res.status(StatusCodes.BAD_REQUEST).json(response);
+    }
+
+    return res.status(StatusCodes.OK).json(response);
   });
 };
 
