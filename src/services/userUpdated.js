@@ -4,7 +4,7 @@ const userUpdated = async (data, id) => {
   try {
     const user = await User.findOneAndUpdate(
       {
-        _id: id.id,
+        _id: id,
       },
       data,
       { new: true }

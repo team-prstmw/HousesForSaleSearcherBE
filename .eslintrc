@@ -22,6 +22,7 @@
     "import/order": 0,
     "simple-import-sort/imports": 2,
     "simple-import-sort/exports": 2,
+    "no-param-reassign": 0,
     "no-unused-vars": [2, { "argsIgnorePattern": "^_" }],
     "no-underscore-dangle": [2, { "allow": ["_id"] }],
     "import/prefer-default-export": "off",
