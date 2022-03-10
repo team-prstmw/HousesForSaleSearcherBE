@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
+const HOUSE_ACTIVE = 1;
+
 const HouseSchema = new Schema(
   {
     owner: {
@@ -78,7 +80,7 @@ const HouseSchema = new Schema(
     },
     houseStatus: {
       type: Number,
-      default: 0,
+      default: HOUSE_ACTIVE,
     },
     viewsCounter: {
       type: Number,
