@@ -13,6 +13,36 @@ const createNewHouseController = async (houseData) => {
   }
 };
 
+export const getAll = async () => {
+  const data = await House.find({}).exec();
+
+  if (!data || !data.length) {
+    return { status: 'error', message: 'Error while fetching houses.' };
+  }
+
+  return { status: 'success', data };
+};
+
+export const getHouseList = async () => {
+  const getAllResponse = await getAll();
+
+  if (getAllResponse.status === 'error') {
+    return { status: getAllResponse.status, message: getAllResponse.message };
+  }
+
+  const { data: houses } = getAllResponse;
+
+  const data = houses.map((house) => {
+    const { address, price, meta } = house;
+    const { street, houseNr, city } = address;
+    const { location } = meta;
+
+    return { price, street, houseNr, city, ...location };
+  });
+
+  return { status: 'success', data };
+};
+
 export const getById = async (id) => getByIdAbstract(id, House);
 
 export const changeOwner = async (id, userId) => {
