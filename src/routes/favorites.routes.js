@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
+
 import { addToFavorite } from '../controllers/favorites.controllers';
 
 const favoritesRoutes = (router) => {

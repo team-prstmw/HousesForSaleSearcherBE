@@ -1,4 +1,6 @@
-import createNewHouseController, { getHouseList, houseDeletion } from '../controllers/house.controllers';
+import createNewHouseController, { deleteHouse, getHouseList } from '../controllers/house.controllers';
+import auth from '../middlewares/verifyToken';
+import handleResponse from '../utils/handleResponse';
 
 const { StatusCodes } = require('http-status-codes');
 
@@ -13,7 +15,8 @@ const createNewHouseRoutes = (router) => {
 
   router.patch('/houses/:id', auth, async (req, res) => {
     const { id } = req.params;
-    houseDeletion(id);
+    const response = await deleteHouse(id);
+    handleResponse(response, res, response.status);
   });
 
   router.get('/houses-list', async (req, res) => {

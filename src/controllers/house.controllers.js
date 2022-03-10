@@ -13,7 +13,7 @@ const createNewHouseController = async (houseData) => {
   }
 };
 
-export const houseDeletion = async (_id) => {
+export const deleteHouse = async (_id) => {
   const house = await House.findOneAndUpdate(
     {
       _id,
