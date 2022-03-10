@@ -39,13 +39,13 @@ export const getById = async (id) => {
   }
 };
 
-export const favoriteDeletion = async (_id) => {
+export const deleteFavorite = async (_id) => {
   const favorite = await Favorite.findOneAndDelete({
     _id,
   });
 
   if (!favorite || !favorite._id) {
-    return { status: 'error', message: 'Favorite was not found.' };
+    return { status: 'invalid', message: 'Favorite was not found.' };
   }
 
   return { status: 'success', message: 'Favorite was deleted.' };

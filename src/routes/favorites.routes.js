@@ -1,4 +1,5 @@
-import { addToFavorite, favoriteDeletion, findAllFavorites } from '../controllers/favorites.controllers';
+import { addToFavorite, deleteFavorite, findAllFavorites } from '../controllers/favorites.controllers';
+import auth from '../middlewares/verifyToken';
 import handleResponse from '../utils/handleResponse';
 
 const favoritesRoutes = (router) => {
@@ -13,7 +14,8 @@ const favoritesRoutes = (router) => {
 
   router.delete('/favorites/:id', auth, async (req, res) => {
     const { id } = req.params;
-    favoriteDeletion(id);
+    const response = await deleteFavorite(id);
+    handleResponse(response, res, response.status);
   });
 };
 
