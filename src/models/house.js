@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const HOUSE_ACTIVE = 1;
+const HOUSE_ACTIVE = require('../constants/houses');
 
 const HouseSchema = new Schema(
   {
