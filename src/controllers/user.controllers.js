@@ -1,18 +1,17 @@
 import bcrypt from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
 
+import { USER_ACTIVE, USER_DELETED } from '../constants/userStatus';
 import User from '../models/user';
 import { editValidation, loginValidation, passwdEditValidation, registerValidation } from '../routes/user/validation';
 import { getByIdAbstract } from '../services/dbMethods';
 import userUpdated from '../services/userUpdated';
 
-const USER_ACTIVE = 1;
-
 export const createUser = async (data) => {
   const { error } = registerValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  const userExist = await User.find({ email: data.email, status: { $eq: 1 } });
+  const userExist = await User.find({ email: data.email, status: { $eq: USER_ACTIVE } });
 
   if (userExist[0] && userExist[0].status === USER_ACTIVE)
     return { status: 'invalid', message: 'Email already exists' };
@@ -37,7 +36,7 @@ export const userLogin = async (data) => {
   const { error } = loginValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  const activeUser = await User.find({ email: data.email, status: { $eq: 1 } });
+  const activeUser = await User.find({ email: data.email, status: { $eq: USER_ACTIVE } });
 
   if (!activeUser[0] || activeUser[0].status === 0) return { status: 'invalid', message: 'Email or password is wrong' };
 
@@ -88,7 +87,7 @@ export const deleteUser = async (id) => {
     {
       _id: id,
     },
-    { status: 0 }
+    { status: USER_DELETED }
   );
 
   return { message: 'The account has been deleted' };
