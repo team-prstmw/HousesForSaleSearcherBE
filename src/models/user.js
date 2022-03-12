@@ -1,3 +1,5 @@
+import { USER_ACTIVE } from '../constants/userStatus';
+
 const mongoose = require('mongoose');
 
 const UserSchema = mongoose.Schema(
@@ -25,7 +27,7 @@ const UserSchema = mongoose.Schema(
     },
     status: {
       type: Number,
-      default: 1,
+      default: USER_ACTIVE,
     },
   },
   { timestamps: true }

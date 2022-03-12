@@ -38,7 +38,8 @@ export const userLogin = async (data) => {
 
   const activeUser = await User.find({ email: data.email, status: { $eq: USER_ACTIVE } });
 
-  if (!activeUser[0] || activeUser[0].status === 0) return { status: 'invalid', message: 'Email or password is wrong' };
+  if (!activeUser[0] || activeUser[0].status === USER_DELETED)
+    return { status: 'invalid', message: 'Email or password is wrong' };
 
   const validPass = await bcrypt.compare(data.password, activeUser[0].password);
   if (!validPass) return { status: 'invalid', message: 'Email or password is wrong' };
@@ -81,7 +82,7 @@ export const passwdEdit = async (data, id) => {
 export const deleteUser = async (id) => {
   const userExist = await User.findOne({ _id: id });
 
-  if (!userExist || userExist.status === 0) return { status: 'invalid', message: 'User not found' };
+  if (!userExist || userExist.status === USER_DELETED) return { status: 'invalid', message: 'User not found' };
 
   await User.findOneAndUpdate(
     {
