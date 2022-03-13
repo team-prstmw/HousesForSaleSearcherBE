@@ -1,9 +1,10 @@
-import User from '../models/user';
-import { registerValidation, loginValidation, editValidation, passwdEditValidation } from '../routes/user/validation';
 import bcrypt from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
-import userUpdated from '../services/userUpdated';
+
+import User from '../models/user';
+import { editValidation, loginValidation, passwdEditValidation, registerValidation } from '../routes/user/validation';
 import { getByIdAbstract } from '../services/dbMethods';
+import userUpdated from '../services/userUpdated';
 
 export const createUser = async (data) => {
   const { error } = registerValidation(data);

@@ -1,5 +1,7 @@
-import { createUser, userLogin, userEdit, passwdEdit } from '../../controllers/user.controllers';
 import { StatusCodes } from 'http-status-codes';
+
+import { findAllUserFavorites } from '../../controllers/favorites.controllers';
+import { createUser, passwdEdit, userEdit, userLogin } from '../../controllers/user.controllers';
 import auth from './verifyToken';
 
 const userRoutes = (router) => {
@@ -42,6 +44,11 @@ const userRoutes = (router) => {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
     }
 
+    return res.status(StatusCodes.OK).json(response);
+  });
+
+  router.get('/users/my-favorites', auth, async (req, res) => {
+    const response = await findAllUserFavorites(req.user._id);
     return res.status(StatusCodes.OK).json(response);
   });
 };
