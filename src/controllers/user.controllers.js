@@ -37,7 +37,6 @@ export const userLogin = async (data) => {
   if (error) return { status: 'invalid', message: error.details[0].message };
 
   const activeUser = await User.find({ email: data.email, status: { $eq: USER_ACTIVE } });
-
   if (!activeUser[0] || activeUser[0].status === USER_DELETED)
     return { status: 'invalid', message: 'Email or password is wrong' };
 
