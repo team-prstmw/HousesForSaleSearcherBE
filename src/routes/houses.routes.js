@@ -15,7 +15,7 @@ const createNewHouseRoutes = (router) => {
 
   router.patch('/houses/:id', auth, async (req, res) => {
     const { id } = req.params;
-    const response = await deleteHouse(id);
+    const response = await deleteHouse(id, req.user._id);
     handleResponse(response, res, response.status);
   });
 

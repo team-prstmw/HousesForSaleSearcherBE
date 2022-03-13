@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { HOUSE_ACTIVE } = require('../constants/houseConst');
+
 const { Schema } = mongoose;
 
 const HouseSchema = new Schema(
@@ -9,7 +11,7 @@ const HouseSchema = new Schema(
     },
     houseStatus: {
       type: Number,
-      default: 1,
+      default: HOUSE_ACTIVE,
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
