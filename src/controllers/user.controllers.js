@@ -46,7 +46,7 @@ export const userLogin = async (data) => {
 
   const token = jsonwebtoken.sign({ _id: activeUser[0]._id }, process.env.TOKEN_SECRET);
 
-  return { token, message: `Witam ${activeUser[0].name}!` };
+  return { id: activeUser[0].id, token, message: `Welcome ${activeUser[0].name}` };
 };
 
 export const userEdit = async (data, id) => {
