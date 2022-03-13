@@ -1,4 +1,4 @@
-import { addToFavorite, findAllUserFavorites } from '../controllers/favorites.controllers';
+import { addToFavorite } from '../controllers/favorites.controllers';
 import handleResponse from '../utils/handleResponse';
 import auth from './user/verifyToken';
 

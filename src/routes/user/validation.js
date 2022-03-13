@@ -1,3 +1,4 @@
+/* eslint-disable prefer-regex-literals */
 const Joi = require('@hapi/joi');
 
 const validateField = {

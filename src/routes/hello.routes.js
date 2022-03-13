@@ -1,9 +1,11 @@
 import { StatusCodes } from 'http-status-codes';
 
-const helloRoutes = (router) => {
-  router.get('/hello', (_req, res) => {
+import auth from '../middlewares/verifyToken';
+
+const helloControllers = (router) => {
+  router.post('/hello', auth, (_req, res) => {
     res.status(StatusCodes.OK).send({ message: 'Hello from the server' });
   });
 };
 
-export default helloRoutes;
+export default helloControllers;
