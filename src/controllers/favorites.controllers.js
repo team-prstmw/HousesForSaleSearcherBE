@@ -24,8 +24,15 @@ export const addToFavorite = async (userId, houseId) => {
 };
 export const findAllUserFavorites = async (userId) => {
   try {
-    const favorites = await Favorite.find({ user: userId }).exec();
-    return { status: 'success', favorites };
+    const favorites = await Favorite.find({ user: userId }).populate('house').exec();
+
+    const parsedData = favorites.map(({ house }) => {
+      const { address, price } = house;
+      const { street, houseNr, city } = address;
+
+      return { price, street, houseNr, city };
+    });
+    return { status: 'success', favorites: parsedData };
   } catch (err) {
     return { status: 'invalid', message: err.message };
   }

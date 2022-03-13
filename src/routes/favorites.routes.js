@@ -1,6 +1,6 @@
 import { addToFavorite } from '../controllers/favorites.controllers';
+import auth from '../middlewares/verifyToken';
 import handleResponse from '../utils/handleResponse';
-import auth from './user/verifyToken';
 
 const favoritesRoutes = (router) => {
   router.post('/favorites', auth, async (req, res) => {
