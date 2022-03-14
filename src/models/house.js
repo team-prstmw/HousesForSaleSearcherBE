@@ -108,4 +108,4 @@ const HouseSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Houses', HouseSchema);
+module.exports = mongoose.model('House', HouseSchema);

@@ -1,15 +1,13 @@
-import { addToFavorite, deleteFavorite, findAllFavorites } from '../controllers/favorites.controllers';
+import { addToFavorite, deleteFavorite } from '../controllers/favorites.controllers';
 import auth from '../middlewares/verifyToken';
 import handleResponse from '../utils/handleResponse';
 
 const favoritesRoutes = (router) => {
-  router.post('/favorites', async (req, res) => {
-    const response = await addToFavorite(req.body); // {userId: '123', houseId: '321'}
-    handleResponse(response, res, response.status);
-  });
-  router.get('/favorites', async (req, res) => {
-    const response = await findAllFavorites();
-    handleResponse(response, res, response.status);
+  router.post('/favorites', auth, async (req, res) => {
+    const { _id: userId } = req.user;
+    const { houseId } = req.body;
+    const response = await addToFavorite(userId, houseId); // {userId: '123', houseId: '321'}
+    handleResponse(response, res, response.status, 'POST');
   });
 
   router.delete('/favorites/:id', auth, async (req, res) => {
