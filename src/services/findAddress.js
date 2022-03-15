@@ -2,7 +2,6 @@ import createNewHouse from '../models/house';
 
 export const findAddress = async (addressData) => {
   const { country, city, street, houseNr, flatNr } = addressData;
-  console.log(country);
   const address = await createNewHouse.findOne({
     country,
     city,
