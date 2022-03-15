@@ -1,4 +1,5 @@
-import createNewHouseController, { getHouseList } from '../controllers/house.controllers';
+import createNewHouseController, { editHouse, getHouseList } from '../controllers/house.controllers';
+
 const { StatusCodes } = require('http-status-codes');
 
 const createNewHouseRoutes = (router) => {
@@ -16,6 +17,16 @@ const createNewHouseRoutes = (router) => {
     if (!response || !response.status) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status: 'server error' });
     }
+    if (response.status === 'invalid') {
+      return res.status(StatusCodes.BAD_REQUEST).json(response);
+    }
+
+    return res.status(StatusCodes.OK).json(response);
+  });
+
+  router.put('/create-new-house/:id', async (req, res) => {
+    const response = await editHouse(req.body, req.params.id);
+
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
     }

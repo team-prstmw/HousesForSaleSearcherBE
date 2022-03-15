@@ -1,6 +1,6 @@
 import House from '../models/house';
-import { findAddress } from '../services/findAddress';
 import { getByIdAbstract } from '../services/dbMethods';
+import { findAddress } from '../services/findAddress';
 
 const createNewHouseController = async (houseData) => {
   const house = new House(houseData);
@@ -47,6 +47,23 @@ export const getById = async (id) => getByIdAbstract(id, House);
 
 export const changeOwner = async (id, userId) => {
   return House.findByIdAndUpdate(id, { owner: userId }).exec();
+};
+
+export const editHouse = async (data, id) => {
+  try {
+    const house = await House.findOneAndUpdate(
+      {
+        _id: id,
+      },
+      data,
+      { new: true }
+    );
+
+    if (!house) return { status: 'invalid', message: 'House not found' };
+    return { message: 'Updated' };
+  } catch (err) {
+    return { status: 'invalid', message: err };
+  }
 };
 
 export default createNewHouseController;
