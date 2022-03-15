@@ -3,7 +3,7 @@ import House from '../models/house';
 import { getByIdAbstract } from '../services/dbMethods';
 import { findAddress } from '../services/findAddress';
 
-export const createNewHouseController = async (houseData) => {
+export const createNewHouse = async (houseData) => {
   const house = new House(houseData);
   try {
     await findAddress(house);
@@ -66,20 +66,18 @@ export const getHouseList = async () => {
 
 export const getById = async (id) => getByIdAbstract(id, House);
 
-// eslint-disable-next-line consistent-return
 export const getHouseDetails = async (id) => {
   const details = await getByIdAbstract(id, House);
-  switch (details.data.houseStatus) {
-    case 0:
-      return details;
-    case 1:
-      // eslint-disable-next-line no-throw-literal
-      throw 'house was sold ';
-    case 2:
-      // eslint-disable-next-line no-throw-literal
-      throw 'house does not exist';
-    default:
-  }
+  if (details.status === 'success')
+    switch (details.data.houseStatus) {
+      case 1:
+        return details;
+      case 2:
+        return { status: 'invalid', message: 'house was sold' };
+      default:
+        return { status: 'invalid', message: 'house does not exist' };
+    }
+  return { status: 'invalid', message: 'house does not exist' };
 };
 
 export const changeOwner = async (id, userId) => {
