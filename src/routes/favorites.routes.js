@@ -1,16 +1,19 @@
-import { StatusCodes } from 'http-status-codes';
-import { addToFavorite } from '../controllers/favorites.controllers';
+import { addToFavorite, deleteFavorite } from '../controllers/favorites.controllers';
+import auth from '../middlewares/verifyToken';
+import handleResponse from '../utils/handleResponse';
 
 const favoritesRoutes = (router) => {
-  router.post('/favorites', async (req, res) => {
-    const response = await addToFavorite(req.body); // {userId: '123', houseId: '321'}
-    if (!response || !response.status) {
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status: 'server error' });
-    }
-    if (response.status === 'invalid') {
-      return res.status(StatusCodes.BAD_REQUEST).json(response);
-    }
-    return res.status(StatusCodes.CREATED).json(response);
+  router.post('/favorites', auth, async (req, res) => {
+    const { _id: userId } = req.user;
+    const { houseId } = req.body;
+    const response = await addToFavorite(userId, houseId); // {userId: '123', houseId: '321'}
+    handleResponse(response, res, response.status, 'POST');
+  });
+
+  router.delete('/favorites/:id', auth, async (req, res) => {
+    const { id } = req.params;
+    const response = await deleteFavorite(id);
+    handleResponse(response, res, response.status);
   });
 };
 

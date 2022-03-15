@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
+const { HOUSE_ACTIVE } = require('../constants/houseConst');
 
 const { Schema } = mongoose;
-
-const HOUSE_ACTIVE = require('../constants/houses');
 
 const HouseSchema = new Schema(
   {
@@ -104,4 +103,4 @@ const HouseSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Houses', HouseSchema);
+module.exports = mongoose.model('House', HouseSchema);

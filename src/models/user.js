@@ -1,3 +1,5 @@
+import { USER_ACTIVE } from '../constants/userStatus';
+
 const mongoose = require('mongoose');
 
 const UserSchema = mongoose.Schema(
@@ -9,7 +11,6 @@ const UserSchema = mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true,
     },
     password: {
       type: String,
@@ -23,6 +24,10 @@ const UserSchema = mongoose.Schema(
     cash: {
       type: Number,
       default: 0,
+    },
+    status: {
+      type: Number,
+      default: USER_ACTIVE,
     },
   },
   { timestamps: true }
