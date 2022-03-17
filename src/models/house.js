@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { HOUSE_ACTIVE } = require('../constants/houseConst');
+
 const { Schema } = mongoose;
 
 const HouseSchema = new Schema(
@@ -6,6 +8,10 @@ const HouseSchema = new Schema(
     houseId: {
       type: Schema.Types.ObjectId,
       default: new mongoose.Types.ObjectId(),
+    },
+    houseStatus: {
+      type: Number,
+      default: HOUSE_ACTIVE,
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
@@ -102,4 +108,4 @@ const HouseSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Houses', HouseSchema);
+module.exports = mongoose.model('House', HouseSchema);

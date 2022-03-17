@@ -1,3 +1,4 @@
+import { HOUSE_INACTIVE } from '../constants/houseConst';
 import House from '../models/house';
 import { getByIdAbstract } from '../services/dbMethods';
 import { findAddress } from '../services/findAddress';
@@ -15,6 +16,36 @@ const createNewHouseController = async (houseData) => {
 
 export const findMany = async (query = {}, sort = {}) => {
   const data = await House.find(query).sort(sort).exec();
+
+  if (!data || !Array.isArray(data)) {
+    return { status: 'error', message: 'Error while fetching houses.' };
+  }
+
+  return { status: 'success', data };
+};
+
+export const deleteHouse = async (_id, userId) => {
+  const house = await House.findOne({
+    _id,
+    houseStatus: { $not: { $eq: HOUSE_INACTIVE } },
+  });
+
+  if (!house || !house._id) {
+    return { status: 'error', message: 'House was not found.' };
+  }
+
+  if (house.owner.toString() !== userId) {
+    return { status: 'invalid', message: 'Logged User is not an owner.' };
+  }
+
+  house.houseStatus = HOUSE_INACTIVE;
+  await house.save();
+
+  return { status: 'success', message: 'House was deleted.' };
+};
+
+export const getAll = async () => {
+  const data = await House.find({}).exec();
 
   if (!data || !Array.isArray(data)) {
     return { status: 'error', message: 'Error while fetching houses.' };

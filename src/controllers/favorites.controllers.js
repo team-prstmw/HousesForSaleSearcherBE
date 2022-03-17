@@ -1,16 +1,17 @@
-import favoriteModel from '../models/favorite';
+import Favorite from '../models/favorite';
+import { getById as getHouseById } from './house.controllers';
+import { getById as getUserById } from './user.controllers';
 
-export const addToFavorite = async (data) => {
-  const { userId, houseId } = data;
+export const addToFavorite = async (userId, houseId) => {
+  const userResponse = await getUserById(userId);
+  const houseResponse = await getHouseById(houseId);
 
-  const user = await userService.getById(userId);
-  const house = await houseService.getById(houseId);
-
-  if (!user.id || !house.id) {
+  const user = userResponse.data;
+  const house = houseResponse.data;
+  if (!user._id || !house._id) {
     return { status: 'invalid', message: 'User or house does not exists.' };
   }
-
-  const favorite = new favoriteModel({
+  const favorite = new Favorite({
     user: userId,
     house: houseId,
   });
@@ -20,4 +21,39 @@ export const addToFavorite = async (data) => {
   } catch (err) {
     return { status: 'invalid', message: err.message };
   }
+};
+export const findAllUserFavorites = async (userId) => {
+  try {
+    const favorites = await Favorite.find({ user: userId }).populate('house').exec();
+
+    const parsedData = favorites.map(({ house }) => {
+      const { address, price } = house;
+      const { street, houseNr, city } = address;
+
+      return { price, street, houseNr, city };
+    });
+    return { status: 'success', favorites: parsedData };
+  } catch (err) {
+    return { status: 'invalid', message: err.message };
+  }
+};
+export const getById = async (id) => {
+  try {
+    const favorite = await Favorite.findById(id);
+    return { status: 'success', favorite };
+  } catch (err) {
+    return { status: 'invalid', message: 'There is no favorite with this ID' };
+  }
+};
+
+export const deleteFavorite = async (_id) => {
+  const favorite = await Favorite.findOneAndDelete({
+    _id,
+  });
+
+  if (!favorite || !favorite._id) {
+    return { status: 'invalid', message: 'Favorite was not found.' };
+  }
+
+  return { status: 'success', message: 'Favorite was deleted.' };
 };

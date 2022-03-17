@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
 
+import { USER_ACTIVE, USER_DELETED } from '../constants/userStatus';
 import User from '../models/user';
 import { editValidation, loginValidation, passwdEditValidation, registerValidation } from '../routes/user/validation';
 import { getByIdAbstract } from '../services/dbMethods';
@@ -10,6 +11,11 @@ import { getHouseList } from './house.controllers';
 export const createUser = async (data) => {
   const { error } = registerValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
+
+  const userExist = await User.find({ email: data.email, status: { $eq: USER_ACTIVE } });
+
+  if (userExist[0] && userExist[0].status === USER_ACTIVE)
+    return { status: 'invalid', message: 'Email already exists' };
 
   const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(data.password, salt);
@@ -31,15 +37,16 @@ export const userLogin = async (data) => {
   const { error } = loginValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  const user = await User.findOne({ email: data.email });
-  if (!user) return { status: 'invalid', message: 'Email or password is wrong' };
+  const activeUser = await User.find({ email: data.email, status: { $eq: USER_ACTIVE } });
+  if (!activeUser[0] || activeUser[0].status === USER_DELETED)
+    return { status: 'invalid', message: 'Email or password is wrong' };
 
-  const validPass = await bcrypt.compare(data.password, user.password);
+  const validPass = await bcrypt.compare(data.password, activeUser[0].password);
   if (!validPass) return { status: 'invalid', message: 'Email or password is wrong' };
 
-  const token = jsonwebtoken.sign({ _id: user._id }, process.env.TOKEN_SECRET);
+  const token = jsonwebtoken.sign({ _id: activeUser[0]._id }, process.env.TOKEN_SECRET);
 
-  return { token, message: `Welcome ${user.name}!` };
+  return { id: activeUser[0].id, token, message: `Welcome ${activeUser[0].name}` };
 };
 
 export const userEdit = async (data, id) => {
@@ -70,6 +77,21 @@ export const passwdEdit = async (data, id) => {
   data.password = await bcrypt.hash(data.password, salt);
 
   return userUpdated(data, id);
+};
+
+export const deleteUser = async (id) => {
+  const userExist = await User.findOne({ _id: id });
+
+  if (!userExist || userExist.status === USER_DELETED) return { status: 'invalid', message: 'User not found' };
+
+  await User.findOneAndUpdate(
+    {
+      _id: id,
+    },
+    { status: USER_DELETED }
+  );
+
+  return { message: 'The account has been deleted' };
 };
 
 export const getById = async (id) => getByIdAbstract(id, User);
