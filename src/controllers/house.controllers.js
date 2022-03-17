@@ -14,6 +14,16 @@ export const createNewHouse = async (houseData) => {
   }
 };
 
+export const findMany = async (query = {}, sort = {}) => {
+  const data = await House.find(query).sort(sort).exec();
+
+  if (!data || !Array.isArray(data)) {
+    return { status: 'error', message: 'Error while fetching houses.' };
+  }
+
+  return { status: 'success', data };
+};
+
 export const deleteHouse = async (_id, userId) => {
   const house = await House.findOne({
     _id,
@@ -34,18 +44,8 @@ export const deleteHouse = async (_id, userId) => {
   return { status: 'success', message: 'House was deleted.' };
 };
 
-export const getAll = async () => {
-  const data = await House.find({}).exec();
-
-  if (!data || !data.length) {
-    return { status: 'error', message: 'Error while fetching houses.' };
-  }
-
-  return { status: 'success', data };
-};
-
-export const getHouseList = async () => {
-  const getAllResponse = await getAll();
+export const getHouseList = async (query = {}, sort = {}) => {
+  const getAllResponse = await findMany(query, sort);
 
   if (getAllResponse.status === 'error') {
     return { status: getAllResponse.status, message: getAllResponse.message };

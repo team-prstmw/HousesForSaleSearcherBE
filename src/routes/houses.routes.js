@@ -22,7 +22,7 @@ const housesRoutes = (router) => {
   });
 
   router.get('/houses-list', async (req, res) => {
-    const response = await getHouseList();
+    const response = await getHouseList({}, req.query);
 
     if (!response || !response.status) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status: 'server error' });

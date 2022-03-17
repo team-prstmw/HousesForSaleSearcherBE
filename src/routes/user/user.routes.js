@@ -1,7 +1,14 @@
 import { StatusCodes } from 'http-status-codes';
 
 import { findAllUserFavorites } from '../../controllers/favorites.controllers';
-import { createUser, deleteUser, passwdEdit, userEdit, userLogin } from '../../controllers/user.controllers';
+import {
+  createUser,
+  deleteUser,
+  getUserHouses,
+  passwdEdit,
+  userEdit,
+  userLogin,
+} from '../../controllers/user.controllers';
 import auth from '../../middlewares/verifyToken';
 
 const userRoutes = (router) => {
@@ -64,6 +71,16 @@ const userRoutes = (router) => {
   router.post('/logout', auth, (req, res) => {
     res.clearCookie('auth');
     return res.status(StatusCodes.OK).json({ message: 'Logged out' });
+  });
+
+  router.get('/users/my-houses', auth, async (req, res) => {
+    const response = await getUserHouses(req.user._id);
+
+    if (response.status === 'invalid') {
+      return res.status(StatusCodes.BAD_REQUEST).json(response);
+    }
+
+    return res.status(StatusCodes.OK).json(response);
   });
 };
 
