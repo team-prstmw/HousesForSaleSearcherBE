@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 
+import { findAllUserFavorites } from '../../controllers/favorites.controllers';
 import {
   createUser,
   deleteUser,
@@ -63,6 +64,10 @@ const userRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
+  router.get('/users/my-favorites', auth, async (req, res) => {
+    const response = await findAllUserFavorites(req.user._id);
+    return res.status(StatusCodes.OK).json(response);
+  });
   router.post('/logout', auth, (req, res) => {
     res.clearCookie('auth');
     return res.status(StatusCodes.OK).json({ message: 'Logged out' });

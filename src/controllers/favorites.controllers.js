@@ -1,14 +1,14 @@
 import Favorite from '../models/favorite';
-import House from '../models/house';
-import User from '../models/user';
+import { getById as getHouseById } from './house.controllers';
+import { getById as getUserById } from './user.controllers';
 
-export const addToFavorite = async (data) => {
-  const { userId, houseId } = data;
+export const addToFavorite = async (userId, houseId) => {
+  const userResponse = await getUserById(userId);
+  const houseResponse = await getHouseById(houseId);
 
-  const user = await User.getById(userId);
-  const house = await House.getById(houseId);
-
-  if (!user.id || !house.id) {
+  const user = userResponse.data;
+  const house = houseResponse.data;
+  if (!user._id || !house._id) {
     return { status: 'invalid', message: 'User or house does not exists.' };
   }
   const favorite = new Favorite({
@@ -22,10 +22,17 @@ export const addToFavorite = async (data) => {
     return { status: 'invalid', message: err.message };
   }
 };
-export const findAllFavorites = async () => {
+export const findAllUserFavorites = async (userId) => {
   try {
-    const favorites = await Favorite.find().skip(0).limit(10);
-    return { status: 'success', favorites };
+    const favorites = await Favorite.find({ user: userId }).populate('house').exec();
+
+    const parsedData = favorites.map(({ house }) => {
+      const { address, price } = house;
+      const { street, houseNr, city } = address;
+
+      return { price, street, houseNr, city };
+    });
+    return { status: 'success', favorites: parsedData };
   } catch (err) {
     return { status: 'invalid', message: err.message };
   }
