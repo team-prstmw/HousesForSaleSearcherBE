@@ -10,12 +10,12 @@ const housesRoutes = (router) => {
     handleResponse(response, res, response.status);
   });
 
-  router.get('/house/:id', async (req, res) => {
+  router.get('/houses/:id', async (req, res) => {
     const response = await getHouseDetails(req.params.id);
     handleResponse(response, res, response.status);
   });
 
-  router.patch('/house/:id', auth, async (req, res) => {
+  router.patch('/houses/:id', auth, async (req, res) => {
     const { id } = req.params;
     const response = await deleteHouse(id, req.user._id);
     handleResponse(response, res, response.status);
