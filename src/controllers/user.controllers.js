@@ -6,6 +6,7 @@ import User from '../models/user';
 import { editValidation, loginValidation, passwdEditValidation, registerValidation } from '../routes/user/validation';
 import { getByIdAbstract } from '../services/dbMethods';
 import userUpdated from '../services/userUpdated';
+import { getHouseList } from './house.controllers';
 
 export const createUser = async (data) => {
   const { error } = registerValidation(data);
@@ -105,6 +106,12 @@ export const addCash = async (id, price) => {
   const user = await User.findById(id).exec();
 
   return user.update({ cash: user.cash + price }).exec();
+};
+
+export const getUserHouses = async (id) => {
+  const userHouses = await getHouseList({ owner: id });
+
+  return userHouses;
 };
 
 export default { getById, collectPayment, addCash };
