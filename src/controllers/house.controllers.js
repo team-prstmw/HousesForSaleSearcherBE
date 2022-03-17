@@ -44,16 +44,6 @@ export const deleteHouse = async (_id, userId) => {
   return { status: 'success', message: 'House was deleted.' };
 };
 
-export const getAll = async () => {
-  const data = await House.find({}).exec();
-
-  if (!data || !Array.isArray(data)) {
-    return { status: 'error', message: 'Error while fetching houses.' };
-  }
-
-  return { status: 'success', data };
-};
-
 export const getHouseList = async (query = {}, sort = {}) => {
   const getAllResponse = await findMany(query, sort);
 
