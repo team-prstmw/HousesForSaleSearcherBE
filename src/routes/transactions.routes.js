@@ -1,9 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
+
 import transactionController from '../controllers/transaction.controllers';
 
 const transactionRoutes = (router) => {
   router.post('/transactions', async (req, res) => {
-    const body = req.body; // {userId: 'buyer', houseId: '', price: 10000}
+    const { body } = req; // {userId: 'buyer', houseId: '', price: 10000}
 
     const response = await transactionController.buyHouse(body);
 
