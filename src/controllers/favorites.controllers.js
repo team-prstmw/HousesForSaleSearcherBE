@@ -27,10 +27,9 @@ export const findAllUserFavorites = async (userId) => {
     const favorites = await Favorite.find({ user: userId }).populate('house').exec();
 
     const parsedData = favorites.map(({ house }) => {
-      const { address, price } = house;
-      const { street, houseNr, city } = address;
+      const { price, street, houseNr, city, descriptionField, location } = house;
 
-      return { price, street, houseNr, city };
+      return { price, street, houseNr, city, descriptionField, ...location };
     });
     return { status: 'success', favorites: parsedData };
   } catch (err) {

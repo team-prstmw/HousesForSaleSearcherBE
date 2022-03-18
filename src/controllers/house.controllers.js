@@ -54,11 +54,9 @@ export const getHouseList = async (query = {}, sort = {}) => {
   const { data: houses } = getAllResponse;
 
   const data = houses.map((house) => {
-    const { address, price, meta } = house;
-    const { street, houseNr, city } = address;
-    const { location } = meta;
+    const { price, street, houseNr, city, descriptionField, location } = house;
 
-    return { price, street, houseNr, city, ...location };
+    return { price, street, houseNr, city, descriptionField, ...location };
   });
 
   return { status: 'success', data };
