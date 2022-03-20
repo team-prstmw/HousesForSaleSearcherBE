@@ -1,74 +1,69 @@
 const mongoose = require('mongoose');
+const { HOUSE_ACTIVE } = require('../constants/houseConst');
 
 const { Schema } = mongoose;
 
 const HouseSchema = new Schema(
   {
-    houseId: {
-      type: Schema.Types.ObjectId,
-      default: new mongoose.Types.ObjectId(),
-    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    address: {
-      country: {
-        type: String,
-        required: true,
-      },
-      region: {
-        type: String,
-      },
-      city: {
-        type: String,
-        required: true,
-      },
-      district: {
-        type: String,
-      },
-      street: {
-        type: String,
-        required: true,
-      },
-      houseNr: {
-        type: String,
-        required: true,
-      },
-      flatNr: {
-        type: String,
-        default: '',
-      },
+    descriptionField: {
+      type: String,
     },
-    houseType: {
+    country: {
       type: String,
       required: true,
     },
-    attributes: {
-      nrOfRooms: {
-        type: Number,
-        required: true,
-      },
-      nrOfBathrooms: {
-        type: Number,
-        required: true,
-      },
-      floors: {
-        type: Number,
-        required: true,
-      },
-      heating: {
-        type: String,
-        required: true,
-        lowercase: true,
-      },
+    region: {
+      type: String,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    district: {
+      type: String,
+    },
+    street: {
+      type: String,
+      required: true,
+    },
+    houseNr: {
+      type: String,
+      required: true,
+    },
+    flatNr: {
+      type: String,
+      default: '',
+    },
+    propertyType: {
+      type: String,
+      required: true,
+    },
+    roomsNumber: {
+      type: Number,
+      required: true,
+    },
+    bathroomNumber: {
+      type: Number,
+      required: true,
+    },
+    floorsInBuilding: {
+      type: Number,
+      required: true,
+    },
+    heating: {
+      type: String,
+      lowercase: true,
     },
     otherFeatures: {
       type: Array,
       default: [],
     },
-    constructionDate: {
+    yearBuilt: {
       type: Number,
     },
     area: {
@@ -79,28 +74,33 @@ const HouseSchema = new Schema(
       type: Number,
       required: true,
     },
-    meta: {
-      viewsCounter: {
+    images: {
+      type: Array,
+    },
+    houseStatus: {
+      type: Number,
+      default: HOUSE_ACTIVE,
+    },
+    viewsCounter: {
+      type: Number,
+      default: 0,
+    },
+    favoritesCounter: {
+      type: Number,
+      default: 0,
+    },
+    location: {
+      lat: {
         type: Number,
-        default: 0,
+        required: true,
       },
-      favoritesCounter: {
+      lng: {
         type: Number,
-        default: 0,
-      },
-      location: {
-        lat: {
-          type: Number,
-          required: true,
-        },
-        lng: {
-          type: Number,
-          required: true,
-        },
+        required: true,
       },
     },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Houses', HouseSchema);
+module.exports = mongoose.model('House', HouseSchema);
