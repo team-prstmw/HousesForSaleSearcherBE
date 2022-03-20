@@ -1,4 +1,5 @@
 import createNewHouseController, { editHouse, getHouseList } from '../controllers/house.controllers';
+import auth from '../middlewares/verifyToken';
 
 const { StatusCodes } = require('http-status-codes');
 
@@ -24,7 +25,7 @@ const createNewHouseRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
-  router.put('/create-new-house/:id', async (req, res) => {
+  router.patch('/create-new-house/:id', auth, async (req, res) => {
     const response = await editHouse(req.body, req.params.id);
 
     if (response.status === 'invalid') {

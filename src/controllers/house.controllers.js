@@ -55,12 +55,11 @@ export const editHouse = async (data, id) => {
       {
         _id: id,
       },
-      data,
-      { new: true }
+      data
     );
 
     if (!house) return { status: 'invalid', message: 'House not found' };
-    return { message: 'Updated' };
+    return { status: 'success', message: 'Updated' };
   } catch (err) {
     return { status: 'invalid', message: err };
   }
