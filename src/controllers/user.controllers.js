@@ -114,4 +114,8 @@ export const getUserHouses = async (id) => {
   return userHouses;
 };
 
+export const userEditCash = async (data, id) => {
+  return userUpdated(data, id);
+};
+
 export default { getById, collectPayment, addCash };

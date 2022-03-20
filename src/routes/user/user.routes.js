@@ -7,6 +7,7 @@ import {
   getUserHouses,
   passwdEdit,
   userEdit,
+  userEditCash,
   userLogin,
 } from '../../controllers/user.controllers';
 import auth from '../../middlewares/verifyToken';
@@ -53,7 +54,17 @@ const userRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
-  router.patch('/users/:id/deletion', async (req, res) => {
+  router.patch('/users/:id/cash', auth, async (req, res) => {
+    const response = await userEditCash(req.body, req.params.id);
+
+    if (response.status === 'invalid') {
+      return res.status(StatusCodes.BAD_REQUEST).json(response);
+    }
+
+    return res.status(StatusCodes.OK).json(response);
+  });
+
+  router.patch('/users/:id/deletion', auth, async (req, res) => {
     const response = await deleteUser(req.params.id);
     res.clearCookie('auth');
 
@@ -68,6 +79,7 @@ const userRoutes = (router) => {
     const response = await findAllUserFavorites(req.user._id);
     return res.status(StatusCodes.OK).json(response);
   });
+
   router.post('/logout', auth, (req, res) => {
     res.clearCookie('auth');
     return res.status(StatusCodes.OK).json({ message: 'Logged out' });
