@@ -40,8 +40,8 @@ const housesRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
-  router.patch('/houses/:id', auth, async (req, res) => {
-    const response = await editHouse(req.body, req.params.id);
+  router.put('/houses/:id', auth, async (req, res) => {
+    const response = await editHouse(req.body, req.params.id, req.user._id);
 
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
