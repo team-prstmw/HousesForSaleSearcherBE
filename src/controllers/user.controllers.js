@@ -53,7 +53,7 @@ export const userEdit = async (data, id) => {
   const { error } = editValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  return userUpdated(data, id);
+  return userUpdated({ name: data.name, phone: data.phone }, id);
 };
 
 export const passwdEdit = async (data, id) => {
@@ -76,7 +76,7 @@ export const passwdEdit = async (data, id) => {
   const salt = await bcrypt.genSalt();
   data.password = await bcrypt.hash(data.password, salt);
 
-  return userUpdated(data, id);
+  return userUpdated({ password: data.password }, id);
 };
 
 export const deleteUser = async (id) => {
@@ -115,7 +115,7 @@ export const getUserHouses = async (id) => {
 };
 
 export const userEditCash = async (data, id) => {
-  return userUpdated(data, id);
+  return userUpdated({ cash: data.cash }, id);
 };
 
 export default { getById, collectPayment, addCash };

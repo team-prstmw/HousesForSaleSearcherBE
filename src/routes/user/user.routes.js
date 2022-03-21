@@ -34,8 +34,8 @@ const userRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
-  router.patch('/users/:id', auth, async (req, res) => {
-    const response = await userEdit(req.body, req.params.id);
+  router.patch('/users', auth, async (req, res) => {
+    const response = await userEdit(req.body, req.user._id);
 
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
@@ -44,8 +44,8 @@ const userRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
-  router.patch('/users/:id/passwd', auth, async (req, res) => {
-    const response = await passwdEdit(req.body, req.params.id);
+  router.patch('/users/cash', auth, async (req, res) => {
+    const response = await userEditCash(req.body, req.user._id);
 
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
@@ -54,8 +54,8 @@ const userRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
-  router.patch('/users/:id/cash', auth, async (req, res) => {
-    const response = await userEditCash(req.body, req.params.id);
+  router.patch('/users/passwd', auth, async (req, res) => {
+    const response = await passwdEdit(req.body, req.user._id);
 
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
@@ -64,8 +64,8 @@ const userRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
-  router.patch('/users/:id/deletion', auth, async (req, res) => {
-    const response = await deleteUser(req.params.id);
+  router.patch('/users/deletion', auth, async (req, res) => {
+    const response = await deleteUser(req.user._id);
     res.clearCookie('auth');
 
     if (response.status === 'invalid') {
