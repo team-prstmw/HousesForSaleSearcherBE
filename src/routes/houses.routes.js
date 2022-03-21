@@ -40,7 +40,7 @@ const housesRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
-  router.patch('/create-new-house/:id', auth, async (req, res) => {
+  router.patch('/houses/:id', auth, async (req, res) => {
     const response = await editHouse(req.body, req.params.id);
 
     if (response.status === 'invalid') {
