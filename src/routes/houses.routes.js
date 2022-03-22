@@ -1,4 +1,10 @@
-import { createNewHouse, deleteHouse, getHouseDetails, getHouseList } from '../controllers/house.controllers';
+import {
+  createNewHouse,
+  deleteHouse,
+  editHouse,
+  getHouseDetails,
+  getHouseList,
+} from '../controllers/house.controllers';
 import auth from '../middlewares/verifyToken';
 import handleResponse from '../utils/handleResponse';
 import parseQuery from '../utils/parseQuery';
@@ -43,6 +49,16 @@ const housesRoutes = (router) => {
     } catch (error) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status: 'server error' });
     }
+  });
+
+  router.put('/houses/:id', auth, async (req, res) => {
+    const response = await editHouse(req.body, req.params.id, req.user._id);
+
+    if (response.status === 'invalid') {
+      return res.status(StatusCodes.BAD_REQUEST).json(response);
+    }
+
+    return res.status(StatusCodes.OK).json(response);
   });
 };
 
