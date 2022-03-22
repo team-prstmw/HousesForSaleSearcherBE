@@ -9,7 +9,6 @@ const userUpdated = async (data, id) => {
       data,
       { new: true }
     );
-
     if (!user) return { status: 'invalid', message: 'User not found' };
     return { message: 'Updated' };
   } catch {

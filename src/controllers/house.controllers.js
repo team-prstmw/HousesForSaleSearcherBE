@@ -81,3 +81,23 @@ export const getHouseDetails = async (id) => {
 export const changeOwner = async (id, userId) => {
   return House.findByIdAndUpdate(id, { owner: userId }).exec();
 };
+
+export const editHouse = async (data, id, userId) => {
+  try {
+    const house = await House.findOneAndUpdate(
+      {
+        _id: id,
+      },
+      data
+    );
+
+    if (house.owner.toString() !== userId) {
+      return { status: 'invalid', message: 'Logged User is not an owner.' };
+    }
+
+    if (!house) return { status: 'invalid', message: 'House not found' };
+    return { status: 'success', message: 'Updated' };
+  } catch (err) {
+    return { status: 'invalid', message: err };
+  }
+};
