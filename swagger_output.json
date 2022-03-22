@@ -7,8 +7,15 @@
   },
   "host": "localhost:4000",
   "basePath": "/api/",
-  "schemes": ["http", "htpps"],
-
+  "components": {
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "JWT",
+        "in": "cookie",
+        "name": "auth"
+      }
+    }
+  },
   "tags": [
     {
       "name": "user",
@@ -42,31 +49,7 @@
             "description": "User object that needs to be added to the HouseForSaleSearcher",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "_id": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "email": {
-                  "type": "string"
-                },
-                "password": {
-                  "type": "string"
-                },
-                "phone": {
-                  "type": "number"
-                },
-                "cash": {
-                  "type": "number"
-                },
-                "status": {
-                  "type": "number",
-                  "default": 1
-                }
-              }
+              "$ref": "#/definitions/User"
             }
           }
         ],
@@ -89,12 +72,6 @@
         "produces": ["application/json"],
         "parameters": [
           {
-            "in": "header",
-            "name": "Cookies",
-            "required": "true",
-            "type": "string"
-          },
-          {
             "in": "body",
             "name": "body",
             "description": "Logs user into the system",
@@ -102,9 +79,6 @@
             "schema": {
               "type": "object",
               "properties": {
-                "_id": {
-                  "type": "string"
-                },
                 "email": {
                   "type": "string"
                 },
@@ -115,6 +89,7 @@
             }
           }
         ],
+        "security": [],
         "responses": {
           "200": {
             "description": "OK"
@@ -296,82 +271,7 @@
             "description": "House object that needs to be added to the HouseForSaleSearcher",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "descriptionField": {
-                  "type": "string"
-                },
-                "country": {
-                  "type": "string"
-                },
-                "region": {
-                  "type": "string"
-                },
-                "city": {
-                  "type": "string"
-                },
-                "district": {
-                  "type": "string"
-                },
-                "street": {
-                  "type": "string"
-                },
-                "houseNr": {
-                  "type": "string"
-                },
-                "flatNr": {
-                  "type": "number"
-                },
-                "propertyType": {
-                  "type": "string"
-                },
-                "roomsNumber": {
-                  "type": "number"
-                },
-                "bathroomNumber": {
-                  "type": "number"
-                },
-                "floorsInBuilding": {
-                  "type": "number"
-                },
-                "heating": {
-                  "type": "string"
-                },
-                "otherFeaatures": {
-                  "type": "string"
-                },
-                "yearBuilt": {
-                  "type": "number"
-                },
-                "area": {
-                  "type": "number"
-                },
-                "price": {
-                  "type": "number"
-                },
-                "images": {
-                  "type": "string"
-                },
-                "houseStatus": {
-                  "type": "number",
-                  "default": "1"
-                },
-                "location": {
-                  "type": "object",
-                  "properties": {
-                    "lat": {
-                      "type": "number"
-                    },
-                    "lng": {
-                      "type": "number"
-                    }
-                  }
-                },
-                "createdAt": {
-                  "type": "string",
-                  "format": "date-time"
-                }
-              }
+              "$ref": "#/definitions/House"
             }
           }
         ],
@@ -427,13 +327,18 @@
         }
       }
     },
-    "/houses-list": {
+    "/houses": {
       "get": {
         "tags": ["house"],
         "description": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "query",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "sort",
             "in": "query",
             "type": "string"
           }
@@ -444,6 +349,9 @@
           },
           "400": {
             "description": "BAD REQUEST"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
           }
         }
       }
@@ -452,7 +360,17 @@
       "post": {
         "tags": ["transaction"],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Transaction object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -492,7 +410,19 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Transaction"
+              }
+            },
+            "example": [
+              {
+                "id": "id"
+              }
+            ]
           },
           "400": {
             "description": "BAD REQUEST"
@@ -512,7 +442,7 @@
               "type": "object",
               "properties": {
                 "houseId": {
-                  "example": "any"
+                  "type": "string"
                 }
               }
             }
@@ -563,5 +493,132 @@
     "security": {
       "app_id": []
     }
-  }
+  },
+  "definitions": {
+    "House": {
+      "type": "object",
+      "properties": {
+        "descriptionField": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "district": {
+          "type": "string"
+        },
+        "street": {
+          "type": "string"
+        },
+        "houseNr": {
+          "type": "string"
+        },
+        "flatNr": {
+          "type": "number"
+        },
+        "propertyType": {
+          "type": "string"
+        },
+        "roomsNumber": {
+          "type": "number"
+        },
+        "bathroomNumber": {
+          "type": "number"
+        },
+        "floorsInBuilding": {
+          "type": "number"
+        },
+        "heating": {
+          "type": "string"
+        },
+        "otherFeaatures": {
+          "type": "string"
+        },
+        "yearBuilt": {
+          "type": "number"
+        },
+        "area": {
+          "type": "number"
+        },
+        "price": {
+          "type": "number"
+        },
+        "images": {
+          "type": "string"
+        },
+        "houseStatus": {
+          "type": "number",
+          "default": "1"
+        },
+        "location": {
+          "type": "object",
+          "properties": {
+            "lat": {
+              "type": "number"
+            },
+            "lng": {
+              "type": "number"
+            }
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Transaction": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "houseId": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "number"
+        },
+        "cash": {
+          "type": "number"
+        },
+        "status": {
+          "type": "number",
+          "default": 1
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Cookie": {
+      "name": "auth",
+      "in": "cookie",
+      "type": "apiKey",
+      "description": "JWT Authorization header"
+    }
+  },
+  "security": [{ "Cookie": [] }]
 }

@@ -2,8 +2,7 @@
 const Joi = require('@hapi/joi');
 
 const validateField = {
-  name: Joi.string().min(6).messages({
-    'string.min': `Name length must be at least 6 characters long`,
+  name: Joi.string().messages({
     'string.empty': `Name must contain value`,
     'any.required': `Name is a required field`,
   }),
