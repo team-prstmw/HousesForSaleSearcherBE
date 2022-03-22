@@ -1,6 +1,7 @@
 import { createNewHouse, deleteHouse, getHouseDetails, getHouseList } from '../controllers/house.controllers';
 import auth from '../middlewares/verifyToken';
 import handleResponse from '../utils/handleResponse';
+import parseQuery from '../utils/parseQuery';
 
 const { StatusCodes } = require('http-status-codes');
 
@@ -21,17 +22,27 @@ const housesRoutes = (router) => {
     handleResponse(response, res, response.status);
   });
 
-  router.get('/houses-list', async (req, res) => {
-    const response = await getHouseList({}, req.query);
+  router.get('/houses', async (req, res) => {
+    const { query } = req;
 
-    if (!response || !response.status) {
+    try {
+      const filter = parseQuery(query.filter);
+      const sort = parseQuery(query.sort);
+
+      const response = await getHouseList(filter, sort);
+
+      if (!response || !response.status) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status: 'server error' });
+      }
+
+      if (response.status === 'invalid') {
+        return res.status(StatusCodes.BAD_REQUEST).json(response);
+      }
+
+      return res.status(StatusCodes.OK).json(response);
+    } catch (error) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status: 'server error' });
     }
-    if (response.status === 'invalid') {
-      return res.status(StatusCodes.BAD_REQUEST).json(response);
-    }
-
-    return res.status(StatusCodes.OK).json(response);
   });
 };
 
