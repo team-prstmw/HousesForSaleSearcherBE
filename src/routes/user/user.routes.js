@@ -7,6 +7,7 @@ import {
   getUserHouses,
   passwdEdit,
   userEdit,
+  userEditCash,
   userLogin,
 } from '../../controllers/user.controllers';
 import auth from '../../middlewares/verifyToken';
@@ -33,8 +34,8 @@ const userRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
-  router.patch('/users/:id', auth, async (req, res) => {
-    const response = await userEdit(req.body, req.params.id);
+  router.patch('/users', auth, async (req, res) => {
+    const response = await userEdit(req.body, req.user._id);
 
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
@@ -43,8 +44,8 @@ const userRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
-  router.patch('/users/:id/passwd', auth, async (req, res) => {
-    const response = await passwdEdit(req.body, req.params.id);
+  router.patch('/users/cash', auth, async (req, res) => {
+    const response = await userEditCash(req.body, req.user._id);
 
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
@@ -53,8 +54,18 @@ const userRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
-  router.patch('/users/:id/deletion', async (req, res) => {
-    const response = await deleteUser(req.params.id);
+  router.patch('/users/passwd', auth, async (req, res) => {
+    const response = await passwdEdit(req.body, req.user._id);
+
+    if (response.status === 'invalid') {
+      return res.status(StatusCodes.BAD_REQUEST).json(response);
+    }
+
+    return res.status(StatusCodes.OK).json(response);
+  });
+
+  router.patch('/users/deletion', auth, async (req, res) => {
+    const response = await deleteUser(req.user._id);
     res.clearCookie('auth');
 
     if (response.status === 'invalid') {
@@ -68,6 +79,7 @@ const userRoutes = (router) => {
     const response = await findAllUserFavorites(req.user._id);
     return res.status(StatusCodes.OK).json(response);
   });
+
   router.post('/logout', auth, (req, res) => {
     res.clearCookie('auth');
     return res.status(StatusCodes.OK).json({ message: 'Logged out' });
