@@ -10,7 +10,7 @@
     "node": "14.17.6"
   },
   "scripts": {
-    "build": "yarn build",
+    "build": "node src/index.js",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
     "test": "jest",
