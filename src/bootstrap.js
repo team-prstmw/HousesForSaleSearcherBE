@@ -4,17 +4,19 @@ import app from './app';
 import env from './constants/env';
 import logger from './utils/logger';
 
-const dbConfig = env.NODE_ENV === 'production' ? {} : { dbName: 'local-project-db' };
-
 let server;
 
-mongoose.connect(env.MONGODB_URL, dbConfig).then(() => {
-  logger.info('Connected to MongoDB');
+mongoose
+  .connect(env.MONGODB_URL, {
+    useNewUrlParser: true,
+  })
+  .then(() => {
+    logger.info('Connected to MongoDB');
 
-  server = app.listen(env.PORT, () => {
-    logger.info(`Listening to port ${env.PORT}`);
+    server = app.listen(env.PORT, () => {
+      logger.info(`Listening to port ${env.PORT}`);
+    });
   });
-});
 
 const exitHandler = () => {
   if (server) {
