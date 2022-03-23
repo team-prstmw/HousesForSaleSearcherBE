@@ -9,8 +9,9 @@
   "volta": {
     "node": "14.17.6"
   },
+  "main": "src/index.js",
   "scripts": {
-    "build": "node src/index.js",
+    "build": "yarn build",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
     "test": "jest",
