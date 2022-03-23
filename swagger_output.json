@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "HouseForSaleSearcher REST API",
-    "description": "This is a sample server HouseForSaleSearcher server. For this sample, you can use the api key `special-key` to test the authorization filters.",
+    "description": "This is a OpenAPI interactive documentation for HouseForSaleSearcher's API CodersCamp project.",
     "version": "1.0.0"
   },
   "servers": [
@@ -12,12 +12,13 @@
   ],
   "security": [
     {
-      "Cookie": []
+      "Token": []
     }
   ],
   "paths": {
     "/users": {
       "post": {
+        "security": [],
         "tags": ["user"],
         "summary": "Create user",
         "operationId": "createUser",
@@ -59,11 +60,8 @@
                   "name": {
                     "type": "string"
                   },
-                  "password": {
-                    "type": "string"
-                  },
                   "phone": {
-                    "type": "number"
+                    "type": "string"
                   }
                 }
               }
@@ -86,6 +84,7 @@
     },
     "/login": {
       "post": {
+        "security": [],
         "tags": ["user"],
         "summary": "Logs user into the system",
         "operationId": "loginUser",
@@ -121,20 +120,11 @@
         "x-codegen-request-body-name": "body"
       }
     },
-    "/users/{id}/passwd": {
+    "/users/passwd": {
       "patch": {
         "tags": ["user"],
         "description": "User password change",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "Updated user object",
           "content": {
@@ -143,6 +133,12 @@
                 "type": "object",
                 "properties": {
                   "password": {
+                    "type": "string"
+                  },
+                  "newPassword": {
+                    "type": "string"
+                  },
+                  "newPasswordRepeat": {
                     "type": "string"
                   }
                 }
@@ -164,20 +160,45 @@
         "x-codegen-request-body-name": "body"
       }
     },
-    "/users/{id}/deletion": {
+    "/users/cash": {
+      "patch": {
+        "tags": ["user"],
+        "description": "Add cash to user account",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cash": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/users/deletion": {
       "patch": {
         "tags": ["user"],
         "description": "Delete user",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK",
@@ -194,20 +215,20 @@
       "get": {
         "tags": ["user"],
         "description": "List of user's favorite hosues",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HouseDetails"
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "BAD REQUEST",
@@ -232,20 +253,20 @@
     "/users/my-houses": {
       "get": {
         "tags": ["user"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HouseDetails"
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "BAD REQUEST",
@@ -256,6 +277,7 @@
     },
     "/create-new-house": {
       "post": {
+        "security": [],
         "tags": ["house"],
         "description": "Add a new house to the HouseForSaleSearcher",
         "requestBody": {
@@ -284,6 +306,7 @@
     },
     "/houses/{id}": {
       "get": {
+        "security": [],
         "tags": ["house"],
         "description": "House details list",
         "parameters": [
@@ -299,7 +322,16 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HouseDetails"
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "BAD REQUEST",
@@ -334,6 +366,7 @@
     },
     "/houses": {
       "get": {
+        "security": [],
         "tags": ["house"],
         "parameters": [
           {
@@ -354,7 +387,16 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HouseDetails"
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "BAD REQUEST",
@@ -410,7 +452,16 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transaction"
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "BAD REQUEST",
@@ -452,6 +503,9 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "userId": {
+                    "type": "string"
+                  },
                   "houseId": {
                     "type": "string"
                   }
@@ -579,6 +633,37 @@
           }
         }
       },
+      "HouseDetails": {
+        "type": "object",
+        "properties": {
+          "descriptionField": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "street": {
+            "type": "string"
+          },
+          "houseNr": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
       "Transaction": {
         "type": "object",
         "properties": {
@@ -612,7 +697,7 @@
       }
     },
     "securitySchemes": {
-      "Cookie": {
+      "Token": {
         "type": "http",
         "description": "JWT Authorization header",
         "scheme": "bearer"
