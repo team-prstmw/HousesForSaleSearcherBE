@@ -4,14 +4,13 @@
   "private": true,
   "engines": {
     "node": "^14",
-    "npm": "please-use-yarn",
     "yarn": "3.0.2"
   },
   "volta": {
     "node": "14.17.6"
   },
+  "main": "src/index.js",
   "scripts": {
-    "build": "yarn build",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
     "test": "jest",
