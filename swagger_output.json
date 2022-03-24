@@ -1,0 +1,712 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "HouseForSaleSearcher REST API",
+    "description": "This is a OpenAPI interactive documentation for HouseForSaleSearcher's API CodersCamp project.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000/api"
+    }
+  ],
+  "security": [
+    {
+      "Token": []
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "security": [],
+        "tags": ["user"],
+        "summary": "Create user",
+        "operationId": "createUser",
+        "requestBody": {
+          "description": "User object that needs to be added to the HouseForSaleSearcher",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "CREATED",
+            "content": {}
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      },
+      "patch": {
+        "tags": ["user"],
+        "summary": "Update user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateUser",
+        "requestBody": {
+          "description": "Updated user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/login": {
+      "post": {
+        "security": [],
+        "tags": ["user"],
+        "summary": "Logs user into the system",
+        "operationId": "loginUser",
+        "requestBody": {
+          "description": "Logs user into the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/users/passwd": {
+      "patch": {
+        "tags": ["user"],
+        "summary": "Change user password",
+        "parameters": [],
+        "requestBody": {
+          "description": "Updated user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string"
+                  },
+                  "newPassword": {
+                    "type": "string"
+                  },
+                  "newPasswordRepeat": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/users/cash": {
+      "patch": {
+        "tags": ["user"],
+        "summary": "Update user's cash value",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cash": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/users/deletion": {
+      "patch": {
+        "tags": ["user"],
+        "summary": "Delete user",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/my-favorites": {
+      "get": {
+        "tags": ["user"],
+        "summary": "List of user's favorite houses",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HouseDetails"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Logout user",
+        "operationId": "logoutUser",
+        "responses": {
+          "default": {
+            "description": "Logged out",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/my-houses": {
+      "get": {
+        "tags": ["user"],
+        "summary": "List houses owned by logged user",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HouseDetails"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/create-new-house": {
+      "post": {
+        "security": [],
+        "tags": ["house"],
+        "summary": "Add a new house",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/House"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/houses/{id}": {
+      "get": {
+        "security": [],
+        "tags": ["house"],
+        "summary": "House details",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HouseDetails"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        }
+      },
+      "patch": {
+        "tags": ["house"],
+        "summary": "Delete house",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/houses": {
+      "get": {
+        "security": [],
+        "tags": ["house"],
+        "summary": "Get houses list with optional filtering and/or sorting",
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HouseDetails"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/transactions": {
+      "post": {
+        "tags": ["transaction"],
+        "summary": "Transaction process (buy house)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Transaction"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "CREATED",
+            "content": {}
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/transactions/{id}": {
+      "get": {
+        "tags": ["transaction"],
+        "summary": "Get transaction by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transaction"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/transactions/": {
+      "get": {
+        "tags": ["transaction"],
+        "summary": "Get all transactions",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transaction"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/favorites": {
+      "post": {
+        "tags": ["favorite"],
+        "summary": "Add house to favorites for logged user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string"
+                  },
+                  "houseId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "CREATED",
+            "content": {}
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/favorites/{id}": {
+      "delete": {
+        "tags": ["favorite"],
+        "summary": "Delete house from favorites for logged user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "House": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string"
+          },
+          "descriptionField": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "district": {
+            "type": "string"
+          },
+          "street": {
+            "type": "string"
+          },
+          "houseNr": {
+            "type": "string"
+          },
+          "flatNr": {
+            "type": "number"
+          },
+          "propertyType": {
+            "type": "string"
+          },
+          "roomsNumber": {
+            "type": "number"
+          },
+          "bathroomNumber": {
+            "type": "number"
+          },
+          "floorsInBuilding": {
+            "type": "number"
+          },
+          "heating": {
+            "type": "string"
+          },
+          "otherFeatures": {
+            "type": "string"
+          },
+          "yearBuilt": {
+            "type": "number"
+          },
+          "area": {
+            "type": "number"
+          },
+          "price": {
+            "type": "number"
+          },
+          "houseStatus": {
+            "type": "number"
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "HouseDetails": {
+        "type": "object",
+        "properties": {
+          "descriptionField": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "street": {
+            "type": "string"
+          },
+          "houseNr": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "Transaction": {
+        "type": "object",
+        "properties": {
+          "buyerId": {
+            "type": "string"
+          },
+          "houseId": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Token": {
+        "type": "http",
+        "description": "JWT Authorization header",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

@@ -5,6 +5,20 @@ import helmet from 'helmet';
 import env from './constants/env';
 import routes from './routes';
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('../swagger_output.json');
+
+const options = {
+  swaggerOptions: {
+    authAction: {
+      JWT: {
+        name: 'JWT',
+        schema: { type: 'http', bearerFormat: 'bearer', scheme: 'http', description: '' },
+      },
+    },
+  },
+};
+
 const app = express();
 
 // set security HTTP headers
@@ -26,5 +40,7 @@ app.use(compression());
 
 // api routes
 app.use('/api', routes);
+
+app.use('/api/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile, options));
 
 export default app;
