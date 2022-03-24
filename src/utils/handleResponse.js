@@ -7,7 +7,8 @@ const handleResponse = (handledResponse, res, status, typeOfResponse = '') => {
   if (status === 'invalid') {
     return res.status(StatusCodes.BAD_REQUEST).json({ status, ...handledResponse });
   }
-  if (typeOfResponse.toUpperCase() === 'GET') return res.status(StatusCodes.OK).json({ status, ...handledResponse });
+  if (typeOfResponse.toUpperCase() === 'GET' || typeOfResponse.toUpperCase() === 'DELETE')
+    return res.status(StatusCodes.OK).json({ status, ...handledResponse });
 
   return res.status(StatusCodes.CREATED).json({ status, ...handledResponse });
 };

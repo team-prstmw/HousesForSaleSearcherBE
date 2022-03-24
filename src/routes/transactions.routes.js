@@ -44,6 +44,10 @@ const transactionRoutes = (router) => {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
     }
 
+    if (response.status === 'error') {
+      return res.status(StatusCodes.BAD_REQUEST).json(response);
+    }
+
     return res.status(StatusCodes.OK).json(response);
   });
 };

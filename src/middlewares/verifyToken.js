@@ -2,7 +2,9 @@ import { StatusCodes } from 'http-status-codes';
 import jsonwebtoken from 'jsonwebtoken';
 
 const auth = (req, res, next) => {
-  const token = req.headers.authorization.split(' ')[1];
+  const { authorization } = req.headers;
+
+  const token = authorization ? authorization.split(' ')[1] : null;
 
   if (!token) return res.status(StatusCodes.UNAUTHORIZED).json('Access denied');
 

@@ -34,8 +34,8 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "CREATED",
             "content": {}
           },
           "400": {
@@ -47,7 +47,7 @@
       },
       "patch": {
         "tags": ["user"],
-        "summary": "Updated user",
+        "summary": "Update user",
         "description": "This can only be done by the logged in user.",
         "operationId": "updateUser",
         "requestBody": {
@@ -123,7 +123,7 @@
     "/users/passwd": {
       "patch": {
         "tags": ["user"],
-        "description": "User password change",
+        "summary": "Change user password",
         "parameters": [],
         "requestBody": {
           "description": "Updated user object",
@@ -163,7 +163,7 @@
     "/users/cash": {
       "patch": {
         "tags": ["user"],
-        "description": "Add cash to user account",
+        "summary": "Update user's cash value",
         "parameters": [],
         "requestBody": {
           "description": "",
@@ -197,7 +197,7 @@
     "/users/deletion": {
       "patch": {
         "tags": ["user"],
-        "description": "Delete user",
+        "summary": "Delete user",
         "parameters": [],
         "responses": {
           "200": {
@@ -214,7 +214,7 @@
     "/users/my-favorites": {
       "get": {
         "tags": ["user"],
-        "description": "List of user's favorite hosues",
+        "summary": "List of user's favorite houses",
         "parameters": [],
         "responses": {
           "200": {
@@ -240,7 +240,7 @@
     "/logout": {
       "post": {
         "tags": ["user"],
-        "description": "Logs out current logged in user session",
+        "summary": "Logout user",
         "operationId": "logoutUser",
         "responses": {
           "default": {
@@ -253,6 +253,7 @@
     "/users/my-houses": {
       "get": {
         "tags": ["user"],
+        "summary": "List houses owned by logged user",
         "parameters": [],
         "responses": {
           "200": {
@@ -279,9 +280,8 @@
       "post": {
         "security": [],
         "tags": ["house"],
-        "description": "Add a new house to the HouseForSaleSearcher",
+        "summary": "Add a new house",
         "requestBody": {
-          "description": "House object that needs to be added to the HouseForSaleSearcher",
           "content": {
             "application/json": {
               "schema": {
@@ -308,7 +308,7 @@
       "get": {
         "security": [],
         "tags": ["house"],
-        "description": "House details list",
+        "summary": "House details",
         "parameters": [
           {
             "name": "id",
@@ -341,7 +341,7 @@
       },
       "patch": {
         "tags": ["house"],
-        "description": "Delete house",
+        "summary": "Delete house",
         "parameters": [
           {
             "name": "id",
@@ -368,9 +368,10 @@
       "get": {
         "security": [],
         "tags": ["house"],
+        "summary": "Get houses list with optional filtering and/or sorting",
         "parameters": [
           {
-            "name": "query",
+            "name": "filter",
             "in": "query",
             "schema": {
               "type": "string"
@@ -412,8 +413,8 @@
     "/transactions": {
       "post": {
         "tags": ["transaction"],
+        "summary": "Transaction process (buy house)",
         "requestBody": {
-          "description": "Transaction object",
           "content": {
             "application/json": {
               "schema": {
@@ -424,8 +425,8 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "CREATED",
             "content": {}
           },
           "400": {
@@ -439,6 +440,7 @@
     "/transactions/{id}": {
       "get": {
         "tags": ["transaction"],
+        "summary": "Get transaction by id",
         "parameters": [
           {
             "name": "id",
@@ -473,6 +475,7 @@
     "/transactions/": {
       "get": {
         "tags": ["transaction"],
+        "summary": "Get all transactions",
         "responses": {
           "200": {
             "description": "OK",
@@ -497,6 +500,7 @@
     "/favorites": {
       "post": {
         "tags": ["favorite"],
+        "summary": "Add house to favorites for logged user",
         "requestBody": {
           "content": {
             "application/json": {
@@ -516,8 +520,8 @@
           "required": false
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "CREATED",
             "content": {}
           },
           "400": {
@@ -531,6 +535,7 @@
     "/favorites/{id}": {
       "delete": {
         "tags": ["favorite"],
+        "summary": "Delete house from favorites for logged user",
         "parameters": [
           {
             "name": "id",
@@ -559,6 +564,9 @@
       "House": {
         "type": "object",
         "properties": {
+          "owner": {
+            "type": "string"
+          },
           "descriptionField": {
             "type": "string"
           },
@@ -598,7 +606,7 @@
           "heating": {
             "type": "string"
           },
-          "otherFeaatures": {
+          "otherFeatures": {
             "type": "string"
           },
           "yearBuilt": {
@@ -609,9 +617,6 @@
           },
           "price": {
             "type": "number"
-          },
-          "images": {
-            "type": "string"
           },
           "houseStatus": {
             "type": "number"
@@ -667,7 +672,7 @@
       "Transaction": {
         "type": "object",
         "properties": {
-          "userId": {
+          "buyerId": {
             "type": "string"
           },
           "houseId": {

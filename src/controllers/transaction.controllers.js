@@ -1,7 +1,7 @@
 import transactionModel from '../models/transaction';
-import userControllers from './user.controllers';
-import { getById as getHouseById, changeOwner as changeHouseOwner } from './house.controllers';
 import { getByIdAbstract } from '../services/dbMethods';
+import { changeOwner as changeHouseOwner, getById as getHouseById } from './house.controllers';
+import userControllers from './user.controllers';
 
 const addTransaction = async (buyerId, sellerId, houseId, price) => {
   if (!buyerId || !sellerId || !houseId || !price) {
@@ -21,8 +21,8 @@ const addTransaction = async (buyerId, sellerId, houseId, price) => {
 export const buyHouse = async (data) => {
   const { buyerId, houseId, price } = data;
 
-  let buyerResponse = await userControllers.getById(buyerId);
-  let houseResponse = await getHouseById(houseId);
+  const buyerResponse = await userControllers.getById(buyerId);
+  const houseResponse = await getHouseById(houseId);
 
   if (!buyerResponse.data || !houseResponse.data) {
     return { status: 'invalid', message: "Buyer and/or house doesn't exist." };
@@ -31,7 +31,7 @@ export const buyHouse = async (data) => {
   const { data: buyer } = buyerResponse;
   const { data: house } = houseResponse;
 
-  let sellerResponse = await userControllers.getById(house.owner);
+  const sellerResponse = await userControllers.getById(house.owner);
 
   if (!sellerResponse.data) {
     return { status: 'invalid', message: "Owner of this house doesn't exist." };
@@ -64,8 +64,7 @@ const getById = async (id) => getByIdAbstract(id, transactionModel);
 
 const getAll = async () => {
   const transactions = await transactionModel.find({});
-
-  if (!transactions || !transactions.length) {
+  if (!transactions || !Array.isArray(transactions)) {
     return { status: 'error', message: 'Error while fetching transactions.' };
   }
 

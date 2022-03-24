@@ -44,8 +44,8 @@ export const deleteHouse = async (_id, userId) => {
   return { status: 'success', message: 'House was deleted.' };
 };
 
-export const getHouseList = async (query = {}, sort = {}) => {
-  const getAllResponse = await findMany(query, sort);
+export const getHouseList = async (filter = {}, sort = {}) => {
+  const getAllResponse = await findMany(filter, sort);
 
   if (getAllResponse.status === 'error') {
     return { status: getAllResponse.status, message: getAllResponse.message };
@@ -54,9 +54,9 @@ export const getHouseList = async (query = {}, sort = {}) => {
   const { data: houses } = getAllResponse;
 
   const data = houses.map((house) => {
-    const { price, street, houseNr, city, descriptionField, location } = house;
+    const { _id, price, street, houseNr, city, descriptionField, location } = house;
 
-    return { price, street, houseNr, city, descriptionField, ...location };
+    return { _id, price, street, houseNr, city, descriptionField, ...location };
   });
 
   return { status: 'success', data };

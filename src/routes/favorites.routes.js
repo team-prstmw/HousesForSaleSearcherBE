@@ -13,7 +13,7 @@ const favoritesRoutes = (router) => {
   router.delete('/favorites/:id', auth, async (req, res) => {
     const { id } = req.params;
     const response = await deleteFavorite(id);
-    handleResponse(response, res, response.status);
+    handleResponse(response, res, response.status, 'DELETE');
   });
 };
 
