@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:4000/api"
+      "url": "https://pacific-refuge-80597.herokuapp.com/api"
     }
   ],
   "security": [
