@@ -17,13 +17,15 @@ Aplikację wykonali uczestnicy kursu przy pomocy mentora.
 ## II. Opis projektu:
 Projekt jest częścią backendową do naszej [aplikacji](https://github.com/team-prstmw/HousesForSaleSearcher) służącej do kupowania i sprzedawania domów.
 
-## III. [Wersja live](https://pacific-refuge-80597.herokuapp.com/api)
+## III. [Swagger - wizualizacja zasobów API](https://pacific-refuge-80597.herokuapp.com/api/doc/#/)
 
-## IV. Wykorzystane technologie:
+## IV. [Wersja live](https://pacific-refuge-80597.herokuapp.com/api)
+
+## V. Wykorzystane technologie:
 - Node.js
 - MongoDB
 
-## V. Narzędzia z jakimi pracowaliśmy:
+## VI. Narzędzia z jakimi pracowaliśmy:
 - Postman
 - MongoDB Compass
 - Asana
@@ -32,7 +34,7 @@ Projekt jest częścią backendową do naszej [aplikacji](https://github.com/tea
 - Swagger/OpenAPI
 
 
-## VI. Organizacja pracy
+## VII. Organizacja pracy
 
 Organizacja pracy zespołu oraz code review były przeprowadzane w serwisie GitHub.
 Zadania opisano oraz rozdzielano w oprogramowaniu Asana.
@@ -40,7 +42,7 @@ Do daily korzystaliśmy z Google Meet. Daily były przeprowadzane w każdy wtore
 Podczas codziennej komunikacji korzystano z Discorda.
 
 
-## VII. Dostępne zapytania
+## VIII. Dostępne zapytania
 
 1. Ulubione
    - POST /favorites  
@@ -57,7 +59,7 @@ Podczas codziennej komunikacji korzystano z Discorda.
 3. Domy
    - POST /create-new-house    
    Dodawanie nowego domu na sprzedaż.
-   - GET /houses 
+   - GET /houses   
    Pobieranie danych wszystkich domów.
    - PATCH /houses/:id     
    Zmiana statusu domu na niemożliwy do kupna.
@@ -68,7 +70,7 @@ Podczas codziennej komunikacji korzystano z Discorda.
    Tworzenie nowego użytkownika.
    - POST /login  
    Logowanie użytkownika.
-   - PATCH /users
+   - PATCH /users  
    Edycja danych użytkownika.
    - PATCH /users/passwd      
    Zmiana hasła użytkownika.
