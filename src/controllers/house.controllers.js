@@ -54,9 +54,9 @@ export const getHouseList = async (filter = {}, sort = {}) => {
   const { data: houses } = getAllResponse;
 
   const data = houses.map((house) => {
-    const { _id, price, street, houseNr, city, descriptionField, location } = house;
+    const { _id, price, street, houseNr, city, descriptionField, images, location } = house;
 
-    return { _id, price, street, houseNr, city, descriptionField, ...location };
+    return { _id, price, street, houseNr, city, descriptionField, images, ...location };
   });
 
   return { status: 'success', data };

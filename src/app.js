@@ -7,6 +7,7 @@ import routes from './routes';
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('../swagger_output.json');
+const cors = require('cors');
 
 const options = {
   swaggerOptions: {
@@ -20,6 +21,12 @@ const options = {
 };
 
 const app = express();
+
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+  })
+);
 
 // set security HTTP headers
 app.use(helmet());
