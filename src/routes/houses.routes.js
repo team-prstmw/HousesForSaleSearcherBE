@@ -1,3 +1,5 @@
+import qs from 'qs';
+
 import {
   createNewHouse,
   deleteHouse,
@@ -7,7 +9,6 @@ import {
 } from '../controllers/house.controllers';
 import auth from '../middlewares/verifyToken';
 import handleResponse from '../utils/handleResponse';
-import parseQuery from '../utils/parseQuery';
 
 const { StatusCodes } = require('http-status-codes');
 
@@ -32,8 +33,8 @@ const housesRoutes = (router) => {
     const { query } = req;
 
     try {
-      const filter = parseQuery(query.filter);
-      const sort = parseQuery(query.sort);
+      const filter = qs.parse(query.filter);
+      const sort = qs.parse(query.sort);
 
       const response = await getHouseList(filter, sort);
 
