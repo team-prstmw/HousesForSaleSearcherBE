@@ -8,12 +8,11 @@ import { getByIdAbstract } from '../services/dbMethods';
 import userUpdated from '../services/userUpdated';
 import { getHouseList } from './house.controllers';
 
-export const createUser = async (data) => {
+export const createUser = async (data, img) => {
   const { error } = registerValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
   const userExist = await User.find({ email: data.email, status: { $eq: USER_ACTIVE } });
-
   if (userExist[0] && userExist[0].status === USER_ACTIVE)
     return { status: 'invalid', message: 'Email already exists' };
 
@@ -25,6 +24,7 @@ export const createUser = async (data) => {
       email: data.email,
       password: hashedPassword,
       phone: data.phone,
+      avatar: img.path,
     });
 
     return user;

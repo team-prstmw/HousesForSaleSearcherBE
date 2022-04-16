@@ -12,14 +12,43 @@ import {
 } from '../../controllers/user.controllers';
 import auth from '../../middlewares/verifyToken';
 
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: (requset, file, callback) => {
+    callback(null, './src/uploads/images');
+  },
+
+  filename: (requset, file, callback) => {
+    callback(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 1024 * 1024 * 3,
+  },
+  // eslint-disable-next-line consistent-return
+  fileFilter: (requset, file, callback) => {
+    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+      callback(null, true);
+    } else {
+      callback(null, false);
+      return callback(new Error('Only .png, .jpg and .jpeg format allowed!'));
+    }
+  },
+});
+
 const userRoutes = (router) => {
-  router.post('/users', async (req, res) => {
-    const response = await createUser(req.body);
+  router.post('/users', upload.single('avatar'), async (req, res) => {
+    // Avatar ta sama nazwa musi być w formulrzu w polu name.
+
+    const response = await createUser(req.body, req.file);
 
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
     }
-
     return res.status(StatusCodes.CREATED).json(response);
   });
 
