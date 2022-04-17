@@ -8,7 +8,7 @@ import { getByIdAbstract } from '../services/dbMethods';
 import userUpdated from '../services/userUpdated';
 import { getHouseList } from './house.controllers';
 
-export const createUser = async (data, img) => {
+export const createUser = async (data) => {
   const { error } = registerValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
@@ -24,7 +24,6 @@ export const createUser = async (data, img) => {
       email: data.email,
       password: hashedPassword,
       phone: data.phone,
-      avatar: img.path,
     });
 
     return user;
@@ -49,11 +48,15 @@ export const userLogin = async (data) => {
   return { id: activeUser[0].id, token, message: `Welcome ${activeUser[0].name}` };
 };
 
-export const userEdit = async (data, id) => {
+export const userEdit = async (data, id, img) => {
   const { error } = editValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
 
-  return userUpdated({ name: data.name, phone: data.phone }, id);
+  if (img === undefined) {
+    img = '';
+  }
+
+  return userUpdated({ name: data.name, phone: data.phone, avatar: img.path }, id);
 };
 
 export const passwdEdit = async (data, id) => {

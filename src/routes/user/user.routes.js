@@ -41,10 +41,8 @@ const upload = multer({
 });
 
 const userRoutes = (router) => {
-  router.post('/users', upload.single('avatar'), async (req, res) => {
-    // Avatar ta sama nazwa musi być w formulrzu w polu name.
-
-    const response = await createUser(req.body, req.file);
+  router.post('/users', async (req, res) => {
+    const response = await createUser(req.body);
 
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
@@ -63,8 +61,8 @@ const userRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
-  router.patch('/users', auth, async (req, res) => {
-    const response = await userEdit(req.body, req.user._id);
+  router.patch('/users', auth, upload.single('avatar'), async (req, res) => {
+    const response = await userEdit(req.body, req.user._id, req.file);
 
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
