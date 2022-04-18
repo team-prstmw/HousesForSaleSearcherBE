@@ -1,12 +1,11 @@
-# Houses For Sale Searcher - CodersCamp 2021/22 Projekt Node.js + MongoDB
-## I. Zespół projektowy
+# Houses For Sale Searcher - CodersCamp 2021/22 Project Node.js + MongoDB
+## I. Team
 
-Zespół pracował w ramach kursu [CodersCamp](https://coderscamp.pl/).
-Aplikację wykonali uczestnicy kursu przy pomocy mentora.
+The team worked as part of the [CodersCamp](https://coderscamp.pl/) course. The application was made by the course participants with the help of a mentor.
 
 **Mentor**: [Filip Hałoń](https://github.com/FilipHalon)
 
-**Uczestnicy**:
+**Participants**:
 
 -   [Marta Goniszewska](https://github.com/mgoniszewska)
 -   [Tomasz Ikert](https://github.com/ike-tom)
@@ -14,18 +13,18 @@ Aplikację wykonali uczestnicy kursu przy pomocy mentora.
 -   [Wojciech Okularczyk](https://github.com/shadowas-py)
 
 
-## II. Opis projektu:
-Projekt jest częścią backendową do naszej [aplikacji](https://github.com/team-prstmw/HousesForSaleSearcher) służącej do kupowania i sprzedawania domów.
+## II. Project description
+Project is a backend for our [app](https://github.com/team-prstmw/HousesForSaleSearcher), which is used to buy and sell houses.
 
-## III. [Swagger - wizualizacja zasobów API](https://pacific-refuge-80597.herokuapp.com/api/doc/#/)
+## III. [Swagger - API description](https://pacific-refuge-80597.herokuapp.com/api/doc/#/)
 
-## IV. [Wersja live](https://pacific-refuge-80597.herokuapp.com/api)
+## IV. [DEMO](https://pacific-refuge-80597.herokuapp.com/api)
 
-## V. Wykorzystane technologie:
+## V. Tech stack
 - Node.js
 - MongoDB
 
-## VI. Narzędzia z jakimi pracowaliśmy:
+## VI. Tools
 - Postman
 - MongoDB Compass
 - Asana
@@ -34,53 +33,48 @@ Projekt jest częścią backendową do naszej [aplikacji](https://github.com/tea
 - Swagger/OpenAPI
 
 
-## VII. Organizacja pracy
+## VII. Workflow
+The organization of the team's work and code review were carried out on GitHub. Tasks are described and distributed in the Asana. We used Google Meet for meetings. Meetings were conducted every Tuesday, Thursday, and Sunday. Discord was used in everyday communication.
 
-Organizacja pracy zespołu oraz code review były przeprowadzane w serwisie GitHub.
-Zadania opisano oraz rozdzielano w oprogramowaniu Asana.
-Do daily korzystaliśmy z Google Meet. Daily były przeprowadzane w każdy wtorek, czwartek oraz niedzielę.
-Podczas codziennej komunikacji korzystano z Discorda.
+## VIII. Available methods
 
-
-## VIII. Dostępne zapytania
-
-1. Ulubione
+1. Favorites
    - POST /favorites  
-   Dodawanie nowego domu do ulubionych.   
+   Add house to favorites for logged user.   
    - DELETE /favorites/:id  
-   Usuwanie wybranego domu z listy ulubionych.
-2. Transakcje
+   Delete house from favorites for logged user.
+2. Transactions
    - POST /transactions    
-   Kupowanie domu.
+   Transaction process (buy house).
    - GET /transactions/:id    
-   Pobieranie danych kupującego, sprzedającego, domu i ceny wybranej transakcji.
+   Get transaction details by id.
    - GET /transactions/  
-   Pobieranie wszystkich transakcji.
-3. Domy
+   Get all transactions.
+3. Houses
    - POST /create-new-house    
-   Dodawanie nowego domu na sprzedaż.
+   Add a new house.
    - GET /houses   
-   Pobieranie danych wszystkich domów.
+   Get houses list with optional filtering and/or sorting.
    - PATCH /houses/:id     
-   Zmiana statusu domu na niemożliwy do kupna.
+   Delete house.
    - GET /houses/:id     
-   Pobieranie szczegółowych danych domu.
-4. Użytkownik
+   House details.
+4. User
    - POST /users  
-   Tworzenie nowego użytkownika.
+   Create user.
    - POST /login  
-   Logowanie użytkownika.
+   Logs user into the system.
    - PATCH /users  
-   Edycja danych użytkownika.
+   Update user.
    - PATCH /users/passwd      
-   Zmiana hasła użytkownika.
+   Change user password.
    - PATCH /users/deletion  
-   Usuwanie użytkownika.
+   Delete user.
    - PATCH /users/:id/cash  
-   Zmiana środków użytkownika.
+   Change avaiable amount of user's cash.
    - POST /logout  
-   Wylogowywanie użytkownika.
+   Logout user.
    - GET /users/my-favorites    
-   Pobieranie danych wszystkich ulubionych domów użytkownika.  
+   List of user's favorite houses.  
    - GET /users/my-houses    
-   Pobieranie danych wszystkich domów użytkownika.
+   List houses owned by logged user.
