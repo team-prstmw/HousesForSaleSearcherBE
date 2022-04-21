@@ -23,7 +23,6 @@ const UserSchema = mongoose.Schema(
     },
     avatar: {
       type: String,
-      data: String,
       default: '',
     },
     cash: {

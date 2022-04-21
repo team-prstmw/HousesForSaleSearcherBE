@@ -25,7 +25,7 @@ const uploadFiles = multer({
       return callback(new Error('Only .png, .jpg and .jpeg format allowed!'));
     }
   },
-}).array('avatar', 1);
+}).single('avatar');
 
 const uploadFilesMiddleware = util.promisify(uploadFiles);
 
