@@ -33,7 +33,8 @@ app.use(helmet());
 
 // parse json request body
 app.use(express.json());
-
+// app.use('/static', express.static('src/uploads/images'));
+app.use('/src/uploads/images', express.static('src/uploads/images'));
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: true }));
 
