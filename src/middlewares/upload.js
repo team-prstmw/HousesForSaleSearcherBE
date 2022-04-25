@@ -2,12 +2,12 @@ const multer = require('multer');
 const util = require('util');
 
 const storage = multer.diskStorage({
-  destination: (requset, file, callback) => {
-    callback(null, './src/uploads/images');
+  destination: (requset, file, cb) => {
+    cb(null, './src/uploads/images');
   },
 
-  filename: (requset, file, callback) => {
-    callback(null, `${Date.now()}-${file.originalname}`);
+  filename: (requset, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
 
@@ -17,15 +17,15 @@ const uploadFiles = multer({
     fileSize: 1024 * 1024 * 3,
   },
   // eslint-disable-next-line consistent-return
-  fileFilter: (requset, file, callback) => {
-    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
-      callback(null, true);
+  fileFilter: (requset, file, cb) => {
+    if (['image/png', 'image/jpg', 'image/jpeg'].includes(file.mimetype)) {
+      cb(null, true);
     } else {
-      callback(null, false);
-      return callback(new Error('Only .png, .jpg and .jpeg format allowed!'));
+      cb(null, false);
+      return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
     }
   },
-}).single('avatar');
+}).any();
 
 const uploadFilesMiddleware = util.promisify(uploadFiles);
 

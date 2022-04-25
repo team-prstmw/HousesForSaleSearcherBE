@@ -43,6 +43,9 @@ if (env.NODE_ENV === 'production') {
   app.use(express.static('public'));
 }
 
+// upload folder for house images
+app.use('/uploads', express.static('src/uploads'));
+
 // gzip compression
 app.use(compression());
 
