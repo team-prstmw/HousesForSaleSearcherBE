@@ -34,8 +34,8 @@ const userRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
-  router.patch('/users', uploadFilesMiddleware, async (req, res) => {
-    const response = await userEdit(req.body, req.user._id, req.file);
+  router.patch('/users', uploadFilesMiddleware, auth, async (req, res) => {
+    const response = await userEdit(req.body, req.user._id, req.files);
 
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
