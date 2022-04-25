@@ -51,7 +51,6 @@ export const userLogin = async (data) => {
 export const userEdit = async (data, id, img) => {
   const { error } = editValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
-  console.log(img);
   if (img === undefined) {
     img = [''];
   }
