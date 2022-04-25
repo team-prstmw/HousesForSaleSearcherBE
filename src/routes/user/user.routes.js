@@ -10,7 +10,9 @@ import {
   userEditCash,
   userLogin,
 } from '../../controllers/user.controllers';
+import uploadFilesMiddleware from '../../middlewares/upload';
 import auth from '../../middlewares/verifyToken';
+import User from '../../models/user';
 
 const userRoutes = (router) => {
   router.post('/users', async (req, res) => {
@@ -19,14 +21,12 @@ const userRoutes = (router) => {
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
     }
-
     return res.status(StatusCodes.CREATED).json(response);
   });
 
   router.post('/login', async (req, res) => {
     const response = await userLogin(req.body);
     res.cookie('auth', response.token, { maxAge: process.env.MAX_AGE, httpOnly: true });
-
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
     }
@@ -34,8 +34,8 @@ const userRoutes = (router) => {
     return res.status(StatusCodes.OK).json(response);
   });
 
-  router.patch('/users', auth, async (req, res) => {
-    const response = await userEdit(req.body, req.user._id);
+  router.patch('/users', uploadFilesMiddleware, async (req, res) => {
+    const response = await userEdit(req.body, req.user._id, req.file);
 
     if (response.status === 'invalid') {
       return res.status(StatusCodes.BAD_REQUEST).json(response);
@@ -93,6 +93,15 @@ const userRoutes = (router) => {
     }
 
     return res.status(StatusCodes.OK).json(response);
+  });
+
+  router.get('/users', auth, async (req, res) => {
+    try {
+      const user = await User.findById(req.user._id);
+      res.status(200).json(user);
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
   });
 };
 
