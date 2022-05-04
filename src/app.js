@@ -24,7 +24,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://unique-kleicha-400068.netlify.app/'],
+    origin: 'https://unique-kleicha-400068.netlify.app/',
   })
 );
 
