@@ -13,7 +13,6 @@ export const createUser = async (data) => {
   if (error) return { status: 'invalid', message: error.details[0].message };
 
   const userExist = await User.find({ email: data.email, status: { $eq: USER_ACTIVE } });
-
   if (userExist[0] && userExist[0].status === USER_ACTIVE)
     return { status: 'invalid', message: 'Email already exists' };
 
@@ -49,11 +48,13 @@ export const userLogin = async (data) => {
   return { id: activeUser[0].id, token, message: `Welcome ${activeUser[0].name}` };
 };
 
-export const userEdit = async (data, id) => {
+export const userEdit = async (data, id, img) => {
   const { error } = editValidation(data);
   if (error) return { status: 'invalid', message: error.details[0].message };
-
-  return userUpdated({ name: data.name, phone: data.phone }, id);
+  if (img === undefined) {
+    img = [''];
+  }
+  return userUpdated({ name: data.name, phone: data.phone, avatar: img[0].path }, id);
 };
 
 export const passwdEdit = async (data, id) => {

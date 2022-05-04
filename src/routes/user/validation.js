@@ -30,6 +30,7 @@ export const registerValidation = (data) => {
     email: validateField.email.required(),
     password: validateField.password,
     phone: validateField.phone.required(),
+    avatar: Joi.string(),
   });
 
   return schemaUser.validate(data);

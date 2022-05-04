@@ -33,7 +33,8 @@ app.use(helmet());
 
 // parse json request body
 app.use(express.json());
-
+// app.use('/static', express.static('src/uploads/images'));
+app.use('/src/uploads/images', express.static('src/uploads/images'));
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: true }));
 
@@ -41,6 +42,9 @@ app.use(express.urlencoded({ extended: true }));
 if (env.NODE_ENV === 'production') {
   app.use(express.static('public'));
 }
+
+// upload folder for house images
+app.use('/uploads', express.static('src/uploads'));
 
 // gzip compression
 app.use(compression());

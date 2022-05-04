@@ -1,3 +1,6 @@
+import qs from 'qs';
+
+import env from '../constants/env';
 import {
   createNewHouse,
   deleteHouse,
@@ -5,15 +8,42 @@ import {
   getHouseDetails,
   getHouseList,
 } from '../controllers/house.controllers';
+import uploadFilesMiddleware from '../middlewares/upload';
 import auth from '../middlewares/verifyToken';
 import handleResponse from '../utils/handleResponse';
-import parseQuery from '../utils/parseQuery';
 
 const { StatusCodes } = require('http-status-codes');
 
 const housesRoutes = (router) => {
-  router.post('/create-new-house', async (req, res) => {
-    const response = await createNewHouse(req.body);
+  router.post('/create-new-house', uploadFilesMiddleware, async (req, res) => {
+    const serializedBody = {
+      owner: req.body.owner,
+      descriptionField: req.body.descriptionField,
+      country: req.body.country,
+      region: req.body.state,
+      city: req.body.city,
+      street: req.body.streetName,
+      houseNr: req.body.streetNumber,
+      propertyType: req.body.propertyType,
+      roomsNumber: parseInt(req.body.roomsNumber || 0, 10),
+      bathroomNumber: req.body.bathroomNumber,
+      floorsInBuilding: req.body.floorsInBuilding,
+      heating: req.body.heating,
+      otherFeatures: [],
+      yearBuilt: parseInt(req.body.yearBuilt, 10),
+      area: parseInt(req.body.dimension || 0, 10),
+      price: parseInt(req.body.price || 0, 10),
+      location: {
+        lat: parseFloat(req.body.lat),
+        lng: parseFloat(req.body.lng),
+      },
+    };
+
+    const response = await createNewHouse({
+      ...serializedBody,
+      images: req.files.map((image) => image.path.replace('src/', env.BASE_URL)),
+    });
+
     handleResponse(response, res, response.status);
   });
 
@@ -32,8 +62,8 @@ const housesRoutes = (router) => {
     const { query } = req;
 
     try {
-      const filter = parseQuery(query.filter);
-      const sort = parseQuery(query.sort);
+      const filter = qs.parse(query.filter);
+      const sort = qs.parse(query.sort);
 
       const response = await getHouseList(filter, sort);
 

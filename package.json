@@ -30,7 +30,9 @@
     "joi": "17.4.2",
     "jsonwebtoken": "8.5.1",
     "mongoose": "6.2.1",
+    "multer": "1.4.4",
     "node-localstorage": "2.2.1",
+    "qs": "6.10.3",
     "swagger-autogen": "2.20.3",
     "swagger-ui-express": "4.3.0"
   },
